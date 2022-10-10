@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.EditNoteFragment">
+
+    <data>
+
+        <import type="androidx.databinding.ObservableField" />
+
+        <import type="com.twain.say.utils.UIState" />
+
+        <import type="com.twain.say.utils.ReminderAvailableState" />
+
+        <import type="com.twain.say.utils.ReminderCompletionState" />
+
+        <import type="com.twain.say.utils.AppUtilKt" />
+
+        <variable
+            name="uiState"
+            type="ObservableField&lt;UIState>" />
+
+        <variable
+            name="reminderAvailableState"
+            type="ObservableField&lt;ReminderAvailableState>" />
+
+        <variable
+            name="reminderCompletionState"
+            type="ObservableField&lt;ReminderCompletionState>" />
+
+        <variable
+            name="note"
+            type="com.twain.say.ui.home.model.Note" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/parent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@{note.color}"
+        app:backgroundTint="#ABFFFFFF"
+        app:backgroundTintMode="screen">
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/btn_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="@dimen/_8sdp"
+            android:layout_marginTop="@dimen/_16sdp"
+            android:background="@null"
+            android:padding="@dimen/_4sdp"
+            app:contentDescription="@string/back_button"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_baseline_arrow_back_24"
+            app:tint="@color/black_day_white_night"
+            tools:ignore="TouchTargetSizeCheck" />
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/btn_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_8sdp"
+            android:layout_marginTop="@dimen/_16sdp"
+            android:background="@null"
+            android:padding="@dimen/_4sdp"
+            app:contentDescription="@string/delete_button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_baseline_delete_outline_24"
+            app:tint="@color/black_day_white_night"
+            app:visible="@{uiState == UIState.HAS_DATA}"
+            tools:ignore="TouchTargetSizeCheck" />
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_note_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:fontFamily="@font/open_sans_semi_bold"
+            android:gravity="start|top"
+            android:hint="@string/note_title_required"
+            android:inputType="textCapSentences"
+            android:layout_marginStart="@dimen/_16sdp"
+            android:layout_marginEnd="@dimen/_16sdp"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:maxLength="50"
+            android:text="@{note.title}"
+            android:textSize="@dimen/_14ssp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_back"
+            app:singleLine="true"
+            tools:ignore="TouchTargetSizeCheck,TextContrastCheck" />
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_note_description"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:background="@null"
+            android:ems="10"
+            android:fontFamily="@font/open_sans_regular"
+            android:gravity="start|top"
+            android:hint="@string/description"
+            android:inputType="textMultiLine|textCapSentences"
+            android:maxLength="750"
+            android:text="@{note.description}"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintEnd_toEndOf="@+id/et_note_title"
+            app:layout_constraintStart_toStartOf="@+id/et_note_title"
+            app:layout_constraintTop_toBottomOf="@+id/et_note_title"
+            tools:ignore="TextContrastCheck" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/btn_record"
+            android:layout_width="@dimen/_120sdp"
+            android:layout_height="@dimen/_120sdp"
+            android:layout_marginTop="@dimen/_16sdp"
+            android:padding="@dimen/_16sdp"
+            android:background="@drawable/ic_circle"
+            app:editNoteVisible="@{note.audioLength}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/et_note_description"
+            app:srcCompat="@drawable/ic_baseline_play_recording" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_timer"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:fontFamily="@font/open_sans_regular"
+            android:gravity="center"
+            android:textColor="@color/black_day_white_night"
+            android:textSize="@dimen/_20ssp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_record"
+            app:timeText="@{note.audioLength}"
+            app:timerVisible="@{note.audioLength}"
+            tools:text="00:00:00" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/bodyLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_16sdp"
+            android:layout_marginEnd="@dimen/_16sdp"
+            android:paddingTop="@dimen/_8sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_back">
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/fab_save_note"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_16sdp"
+            android:layout_marginBottom="@dimen/_16sdp"
+            android:text="@string/save"
+            android:textSize="@dimen/_14ssp"
+            app:backgroundTint="@color/cardview_light_background"
+            app:icon="@drawable/ic_baseline_done_24"
+            app:iconGravity="textStart"
+            app:iconPadding="@dimen/_2ssp"
+            app:iconSize="@dimen/_27sdp"
+            app:layout_constraintBottom_toTopOf="@id/card_add_reminder"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:textAllCaps="false" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_add_reminder"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:elevation="@dimen/_4sdp"
+            app:cardBackgroundColor="@null"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/parent_add_reminder"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingStart="@dimen/_8sdp"
+                android:paddingTop="@dimen/_4sdp"
+                android:paddingEnd="@dimen/_8sdp"
+                android:paddingBottom="@dimen/_4sdp">
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:id="@+id/appCompatImageView3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:padding="@dimen/_4sdp"
+                    android:src="@drawable/ic_baseline_alarm_24"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tint="@color/black_day_white_night" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/tv_reminder_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_4sdp"
+                    android:fontFamily="@font/open_sans_regular"
+                    android:padding="@dimen/_4sdp"
+                    android:text="@{AppUtilKt.formatReminderDate(note.reminder)}"
+                    android:textColor="@color/black_day_white_night"
+                    android:textSize="@dimen/_14ssp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/appCompatImageView3"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:strikeThrough="@{reminderCompletionState == ReminderCompletionState.COMPLETED}"
+                    app:visible="@{reminderAvailableState == ReminderAvailableState.HAS_REMINDER}" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/tvAlarmSet"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_4sdp"
+                    android:fontFamily="@font/open_sans_regular"
+                    android:text="@string/set_a_reminder_to_this_note"
+                    android:textSize="@dimen/_12ssp"
+                    app:layout_constraintBottom_toBottomOf="@+id/appCompatImageView3"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/appCompatImageView3"
+                    app:layout_constraintTop_toTopOf="@+id/appCompatImageView3"
+                    app:visible="@{reminderAvailableState == ReminderAvailableState.NO_REMINDER}" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

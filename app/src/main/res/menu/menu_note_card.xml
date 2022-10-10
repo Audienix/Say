@@ -1,0 +1,23 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.twain.say.MainActivity">
+    <item
+        android:id="@+id/action_show_info"
+        android:orderInCategory="99"
+        android:icon="@drawable/ic_baseline_info_24"
+        android:title="@string/show_info"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_edit"
+        android:orderInCategory="100"
+        android:icon="@drawable/ic_baseline_edit_note_24"
+        android:title="@string/edit_note"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_delete"
+        android:orderInCategory="101"
+        android:icon="@drawable/ic_baseline_delete_outline_24"
+        android:title="@string/delete_note"
+        app:showAsAction="never" />
+</menu>

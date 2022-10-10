@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="androidx.databinding.ObservableField" />
+
+        <import type="com.twain.say.utils.UIState" />
+
+        <variable
+            name="uiState"
+            type="ObservableField&lt;UIState>" />
+
+        <variable
+            name="viewModel"
+            type="com.twain.say.ui.home.viewmodel.HomeViewModel" />
+    </data>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context=".ui.HomeFragment">
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/btn_settings"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@null"
+                android:padding="@dimen/_4sdp"
+                android:tint="@color/black_day_white_night"
+                app:layout_constraintBottom_toBottomOf="@+id/materialTextView3"
+                app:layout_constraintEnd_toEndOf="@+id/fab_add_note"
+                app:layout_constraintTop_toTopOf="@+id/materialTextView2"
+                app:srcCompat="@drawable/ic_baseline_settings_24" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/materialTextView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_16sdp"
+                android:layout_marginTop="@dimen/_16sdp"
+                android:fontFamily="@font/open_sans_bold"
+                android:text="@string/hi_there"
+                android:textColor="@color/black_day_white_night"
+                android:textSize="@dimen/_18ssp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/materialTextView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:alpha=".7"
+                android:fontFamily="@font/open_sans_medium"
+                android:text="@string/welcome_back"
+                android:textSize="@dimen/_12ssp"
+                app:layout_constraintStart_toStartOf="@+id/materialTextView2"
+                app:layout_constraintTop_toBottomOf="@+id/materialTextView2" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view_notes"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="@dimen/_8sdp"
+                android:layout_marginTop="@dimen/_16sdp"
+                android:layout_marginEnd="@dimen/_8sdp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/materialTextView3"
+                app:listItems="@{viewModel.notes}"
+                app:visible="@{uiState == UIState.HAS_DATA}"
+                tools:listitem="@layout/item_voice_note" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_empty_notes"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_margin="@dimen/_16sdp"
+                android:src="@drawable/ic_home_empty"
+                app:layout_constraintBottom_toTopOf="@+id/fab_add_note"
+                app:layout_constraintEnd_toEndOf="@+id/fab_add_note"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="@+id/materialTextView3"
+                app:layout_constraintTop_toBottomOf="@+id/materialTextView3"
+                app:layout_constraintVertical_bias="1.0" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tv_empty_notes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_8sdp"
+                android:fontFamily="@font/open_sans_regular"
+                android:paddingStart="@dimen/_16sdp"
+                android:paddingEnd="@dimen/_16sdp"
+                android:text="@string/your_record_list_is_empty_click_the_button_below_to_get_started"
+                android:textAlignment="center"
+                android:textColor="@color/primary_darker"
+                android:textSize="@dimen/_12ssp"
+                app:fontFamily="@font/open_sans_semi_bold"
+                app:layout_constraintBottom_toBottomOf="@+id/iv_empty_notes"
+                app:layout_constraintEnd_toEndOf="@+id/iv_empty_notes"
+                app:layout_constraintStart_toStartOf="@+id/iv_empty_notes" />
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/group_empty_notes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="visible"
+                app:constraint_referenced_ids="iv_empty_notes, tv_empty_notes"
+                app:visible="@{uiState == UIState.EMPTY}" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab_add_note"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/_16sdp"
+                android:layout_marginBottom="@dimen/_16sdp"
+                android:backgroundTint="@color/fab_background_tint"
+                android:contentDescription="@string/add_note_button"
+                app:iconSize="@dimen/_27sdp"
+                app:tint="@color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:srcCompat="@drawable/ic_baseline_voice" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <include
+            android:id="@+id/bottom_sheet_dialog_layout"
+            layout="@layout/bsheet_dialog_now_playing"
+            android:visibility="gone" />
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

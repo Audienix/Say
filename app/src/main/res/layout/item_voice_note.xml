@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="com.twain.say.utils.Extensions" />
+
+        <import type="com.twain.say.utils.AppUtilKt" />
+
+        <variable
+            name="note"
+            type="com.twain.say.ui.home.model.Note" />
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="@dimen/_8sdp"
+        app:cardElevation="@dimen/_4sdp"
+        app:cardUseCompatPadding="true">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <FrameLayout
+                android:id="@+id/headerLayout"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:background="@{note.color}"
+                android:orientation="vertical"
+                android:padding="@dimen/_8sdp"
+                android:backgroundTint="#D8FFFFFF"
+                android:backgroundTintMode="screen"
+                app:layout_constraintBottom_toBottomOf="@id/guideline1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:background="@color/teal_500" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/btn_play"
+                android:layout_width="@dimen/_32sdp"
+                android:layout_height="@dimen/_32sdp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:background="@drawable/ic_circle"
+                android:backgroundTint="@{note.color}"
+                android:contentDescription="@string/record_button"
+                android:elevation="@dimen/_8sdp"
+                android:padding="@dimen/_4sdp"
+                app:editNoteVisible="@{note.audioLength}"
+                app:layout_constraintEnd_toEndOf="@id/guideline2"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_baseline_play_recording" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tv_record_length"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:layout_marginBottom="@dimen/_4sdp"
+                android:fontFamily="@font/open_sans_regular"
+                android:gravity="center"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_10ssp"
+                app:layout_constraintBottom_toBottomOf="@id/guideline1"
+                app:layout_constraintEnd_toEndOf="@id/guideline2"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/btn_play"
+                app:timeText="@{note.audioLength}"
+                tools:text="10:36:25" />
+
+            <View
+                android:id="@+id/view1"
+                android:layout_width="@dimen/_1sdp"
+                android:layout_height="0dp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:layout_marginBottom="@dimen/_4sdp"
+                android:background="@color/primary_darker"
+                app:layout_constraintBottom_toBottomOf="@id/guideline1"
+                app:layout_constraintStart_toStartOf="@id/guideline2"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tv_note_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_8sdp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:layout_marginEnd="@dimen/_8sdp"
+                android:layout_marginBottom="@dimen/_4sdp"
+                android:layout_toEndOf="@id/view1"
+                android:ellipsize="end"
+                android:fontFamily="@font/open_sans_bold"
+                android:maxLines="1"
+                android:text="@{note.title}"
+                android:textAppearance="@style/TextAppearance.Material3.LabelLarge"
+                android:textColor="@color/black"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@id/guideline2"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Note Title 1" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tv_note_description"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_8sdp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:layout_marginEnd="@dimen/_8sdp"
+                android:ellipsize="end"
+                android:fontFamily="@font/open_sans_regular"
+                android:maxLines="1"
+                android:text="@{note.description}"
+                android:textAppearance="@style/TextAppearance.Material3.LabelMedium"
+                android:textColor="@color/black"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@id/guideline2"
+                app:layout_constraintTop_toBottomOf="@id/tv_note_title"
+                tools:text="Note Title Description" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tv_note_last_modification_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_8sdp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:layout_marginEnd="@dimen/_8sdp"
+                android:fontFamily="@font/open_sans_italic"
+                android:maxLines="1"
+                android:text="@{AppUtilKt.formatDate(note.lastModificationDate, context)}"
+                android:textAppearance="@style/TextAppearance.Material3.LabelSmall"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_10ssp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_note_description"
+                tools:text="17/11/21" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/appCompatImageView2"
+                android:layout_width="@dimen/_12sdp"
+                android:layout_height="@dimen/_12sdp"
+                android:layout_marginStart="@dimen/_8sdp"
+                android:layout_marginEnd="@dimen/_8sdp"
+                android:alpha=".8"
+                android:background="@null"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/guideline1"
+                app:srcCompat="@drawable/ic_baseline_alarm_24" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tv_reminder_time"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_4sdp"
+                android:layout_marginEnd="@dimen/_8sdp"
+                android:alpha=".8"
+                android:ellipsize="end"
+                android:fontFamily="@font/open_sans_regular"
+                android:maxLines="1"
+                android:text="@{AppUtilKt.formatReminderDate(note.reminder)}"
+                android:textAlignment="viewStart"
+                android:textColor="@color/black_day_white_night"
+                android:textSize="@dimen/_10ssp"
+                app:layout_constraintBottom_toBottomOf="@+id/appCompatImageView2"
+                app:layout_constraintEnd_toStartOf="@id/tv_note_menu"
+                app:layout_constraintStart_toEndOf="@+id/appCompatImageView2"
+                app:layout_constraintTop_toTopOf="@+id/appCompatImageView2"
+                app:strikeThrough="@{AppUtilKt.currentDate().timeInMillis > note.reminder}"
+                app:visible="@{note.reminder != null}" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_4sdp"
+                android:layout_marginEnd="@dimen/_8sdp"
+                android:ellipsize="end"
+                android:fontFamily="@font/open_sans_regular"
+                android:maxLines="1"
+                android:text="@string/set_a_reminder_to_this_note"
+                android:textAlignment="viewStart"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_10ssp"
+                app:layout_constraintBottom_toBottomOf="@+id/appCompatImageView2"
+                app:layout_constraintEnd_toStartOf="@id/tv_note_menu"
+                app:layout_constraintStart_toEndOf="@+id/appCompatImageView2"
+                app:layout_constraintTop_toTopOf="@+id/appCompatImageView2"
+                app:visible="@{note.reminder == null}" />
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/tv_note_menu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_4sdp"
+                android:background="@drawable/ic_menu_vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/guideline1" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.7" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.2" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+</layout>

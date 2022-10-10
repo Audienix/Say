@@ -1,0 +1,21 @@
+<resources>
+    <!-- Theme Preference -->
+    <string-array name="pref_theme">
+        <item>@string/theme_system_default</item>
+        <item>@string/theme_light</item>
+        <item>@string/theme_dark</item>
+    </string-array>
+
+    <string-array name="pref_theme_values">
+        <item>MODE_NIGHT_FOLLOW_SYSTEM</item>
+        <item>MODE_NIGHT_NO</item>
+        <item>MODE_NIGHT_YES</item>
+    </string-array>
+
+    <string-array name="filter_array">
+        <item>@string/all</item>
+        <item>@string/today</item>
+        <item>@string/upcoming</item>
+        <item>@string/completed</item>
+    </string-array>
+</resources>

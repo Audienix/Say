@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <color name="black_day_white_night">@color/white</color>
+    <color name="fragment_background">@color/primary</color>
+    <color name="other_fragment_background">@color/primary_darker</color>
+    <color name="primary">#313033</color>
+    <color name="primary_dark">#1C1B1F</color>
+    <color name="primary_darker">@color/black</color>
+    <color name="accent">@color/white</color>
+    <color name="mic_accent">#939094</color>
+    <color name="fab_background_tint">#EFB8C8</color>
+    <color name="about_icon_color">#939094</color>
+    <color name="edit_reminder_button_color">@color/about_icon_color</color>
+    <color name="grey">@color/white</color>
+    <color name="titleText">@color/white</color>
+    <color name="subtitleText">@color/white</color>
+</resources>
