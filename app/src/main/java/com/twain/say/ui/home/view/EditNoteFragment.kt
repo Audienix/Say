@@ -19,16 +19,18 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.twain.say.MainActivity
 import com.twain.say.R
+import com.twain.say.data.model.AlertDialogDetails
 import com.twain.say.databinding.DialogEditReminderBinding
 import com.twain.say.databinding.FragmentEditNoteBinding
 import com.twain.say.helper.AudioRecorder
+import com.twain.say.ui.common.AlertDialogFragment
 import com.twain.say.ui.home.model.Note
 import com.twain.say.ui.home.viewmodel.HomeViewModel
 import com.twain.say.utils.*
 import com.twain.say.utils.Extensions.showToast
+import com.twain.say.utils.Extensions.statusBarColorFromNoteColor
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -45,7 +47,7 @@ class EditNoteFragment : Fragment(), View.OnClickListener, TimePickerDialog.OnTi
 
     private val viewModel: HomeViewModel by viewModels()
     private val args: EditNoteFragmentArgs by navArgs()
-    private var file: File? = null
+    private var recordingFile: File? = null
     private var isRecording = false
 
     private lateinit var _note: Note
@@ -94,7 +96,7 @@ class EditNoteFragment : Fragment(), View.OnClickListener, TimePickerDialog.OnTi
                 else
                     openEditReminderDialog()
             }
-            btnDelete.setOnClickListener { launchDeleteNoteDialog(requireContext()) }
+            btnDelete.setOnClickListener { launchDeleteNoteDialog() }
             btnRecord.setOnClickListener(this@EditNoteFragment)
             fabSaveNote.setOnClickListener(this@EditNoteFragment)
 
@@ -106,7 +108,7 @@ class EditNoteFragment : Fragment(), View.OnClickListener, TimePickerDialog.OnTi
                     )
                 )
                 viewModel.uiState.set(UIState.EMPTY)
-                file = null
+                recordingFile = null
             } else {
                 setup()
             }
@@ -122,7 +124,7 @@ class EditNoteFragment : Fragment(), View.OnClickListener, TimePickerDialog.OnTi
                 )
             )
             lifecycleScope.launch(Dispatchers.IO) {
-                file = File(_note.filePath)
+                recordingFile = File(_note.filePath)
             }
             viewModel.apply {
                 uiState.set(UIState.HAS_DATA)
@@ -144,12 +146,7 @@ class EditNoteFragment : Fragment(), View.OnClickListener, TimePickerDialog.OnTi
 
     override fun onResume() {
         super.onResume()
-//        if (args.note.id == 0)
-//            binding.etNoteTitle.apply {
-//                requestFocus()
-//                showKeyboardFor(requireContext())
-//            }
-        updateStatusBarColor(requireActivity(), binding.note!!.color)
+        statusBarColorFromNoteColor(binding.note!!.color)
     }
 
     override fun onDestroyView() {
@@ -331,18 +328,24 @@ class EditNoteFragment : Fragment(), View.OnClickListener, TimePickerDialog.OnTi
         bottomSheetDialog.show()
     }
 
-    private fun launchDeleteNoteDialog(context: Context) {
-        val materialDialog = MaterialAlertDialogBuilder(context)
-        materialDialog.apply {
-            setTitle(context.getString(R.string.delete_note))
-            setMessage("${context.getString(R.string.confirm_deletion)} '${_note.title}?'")
-            setNegativeButton(context.getString(R.string.no)) { dialog, _ -> dialog?.dismiss() }
-            setPositiveButton(context.getString(R.string.yes)) { _, _ ->
-                viewModel.deleteNote(_note)
-                lifecycleScope.launch(Dispatchers.IO) { file?.delete() }
-                navController.navigate(R.id.action_editNoteFragment_to_homeFragment)
-            }
-            show()
+    private fun launchDeleteNoteDialog() {
+        val alertDlg = AlertDialogDetails(
+            R.drawable.ic_alert_warning,
+            resources.getString(R.string.delete_note),
+            "${requireContext().getString(R.string.confirm_deletion)} '${_note.title}?'",
+            resources.getString(R.string.yes),
+            resources.getString(R.string.no),
+            true
+        )
+        AlertDialogFragment(requireContext()).show(alertDlg) { dialog, response ->
+           if(response == AlertDialogFragment.ResponseType.YES){
+               viewModel.deleteNote(_note)
+               lifecycleScope.launch(Dispatchers.IO) { recordingFile?.delete() }
+               navController.navigate(R.id.action_editNoteFragment_to_homeFragment)
+           }
+            else if(response == AlertDialogFragment.ResponseType.NO){
+               dialog.dismiss()
+           }
         }
     }
 }

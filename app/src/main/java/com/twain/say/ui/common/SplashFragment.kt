@@ -12,7 +12,7 @@ import androidx.navigation.Navigation
 import com.twain.say.R
 import com.twain.say.databinding.FragmentSplashBinding
 import com.twain.say.utils.Extensions.dataStore
-import com.twain.say.utils.Extensions.flags
+import com.twain.say.utils.Extensions.statusBarColorFromResource
 import com.twain.say.utils.PreferenceKeys
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -38,7 +38,7 @@ class SplashFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         navController = Navigation.findNavController(view)
-        flags(R.color.fragment_background)
+        statusBarColorFromResource(R.color.fragment_background)
 
         lifecycleScope.launch(Dispatchers.Main) {
             delay(1500L)

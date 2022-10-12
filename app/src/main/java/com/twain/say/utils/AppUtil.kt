@@ -23,13 +23,6 @@ val colors = listOf(
     -11419154, -14654801
 )
 
-fun updateStatusBarColor(context: Activity, color: Int) {
-    val window = context.window
-    window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-//        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-    window.statusBarColor = color
-}
-
 fun filePath(activity: Activity) = activity.getExternalFilesDir("/")?.absolutePath
 
 fun hasPermission(context: Context, permission: String) =
@@ -42,7 +35,6 @@ fun requestPermission(activity: Activity, message: String, requestCode: Int, per
 fun currentDate(): Calendar = Calendar.getInstance()
 
 fun formatDate(date: Long, context: Context): String {
-
     val now = Date()
     val seconds = TimeUnit.MILLISECONDS.toSeconds(now.time - date)
     val minutes = TimeUnit.MILLISECONDS.toMinutes(now.time - date)
