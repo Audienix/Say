@@ -37,9 +37,7 @@
         android:id="@+id/parent"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@{note.color}"
-        app:backgroundTint="#ABFFFFFF"
-        app:backgroundTintMode="screen">
+        android:background="@{note.color}">
 
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/btn_back"
@@ -61,8 +59,8 @@
             android:id="@+id/btn_delete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/_8sdp"
             android:layout_marginTop="@dimen/_16sdp"
+            android:layout_marginEnd="@dimen/_8sdp"
             android:background="@null"
             android:padding="@dimen/_4sdp"
             app:contentDescription="@string/delete_button"
@@ -73,57 +71,75 @@
             app:visible="@{uiState == UIState.HAS_DATA}"
             tools:ignore="TouchTargetSizeCheck" />
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/et_note_title"
-            android:layout_width="0dp"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_note_title"
+            style="?attr/textInputOutlinedStyle"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@null"
-            android:fontFamily="@font/open_sans_semi_bold"
-            android:gravity="start|top"
-            android:hint="@string/note_title_required"
-            android:inputType="textCapSentences"
             android:layout_marginStart="@dimen/_16sdp"
-            android:layout_marginEnd="@dimen/_16sdp"
             android:layout_marginTop="@dimen/_8sdp"
-            android:maxLength="50"
-            android:text="@{note.title}"
-            android:textSize="@dimen/_14ssp"
+            android:layout_marginEnd="@dimen/_16sdp"
+            android:hint="@string/note_hint_title"
+            app:counterEnabled="true"
+            app:counterMaxLength="50"
+            app:errorEnabled="true"
+            app:errorTextColor="@color/design_default_color_error"
+            app:boxStrokeErrorColor="?attr/colorError"
+            app:endIconMode="clear_text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btn_back"
-            app:singleLine="true"
-            tools:ignore="TouchTargetSizeCheck,TextContrastCheck" />
+            app:layout_constraintTop_toBottomOf="@+id/btn_back">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/et_note_description"
-            android:layout_width="0dp"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_note_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textCapSentences"
+                android:maxLength="50"
+                android:text="@{note.title}"
+                android:textSize="@dimen/_12ssp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_note_description"
+            style="?attr/textInputOutlinedStyle"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_16sdp"
             android:layout_marginTop="@dimen/_8sdp"
-            android:background="@null"
-            android:ems="10"
-            android:fontFamily="@font/open_sans_regular"
-            android:gravity="start|top"
-            android:hint="@string/description"
-            android:inputType="textMultiLine|textCapSentences"
-            android:maxLength="750"
-            android:text="@{note.description}"
-            android:textSize="@dimen/_12ssp"
-            app:layout_constraintEnd_toEndOf="@+id/et_note_title"
-            app:layout_constraintStart_toStartOf="@+id/et_note_title"
-            app:layout_constraintTop_toBottomOf="@+id/et_note_title"
-            tools:ignore="TextContrastCheck" />
+            android:layout_marginEnd="@dimen/_16sdp"
+            android:hint="@string/note_hint_description"
+            app:counterEnabled="true"
+            app:counterMaxLength="500"
+            app:endIconMode="clear_text"
+            app:layout_constraintEnd_toEndOf="@+id/til_note_title"
+            app:layout_constraintStart_toStartOf="@+id/til_note_title"
+            app:layout_constraintTop_toBottomOf="@+id/til_note_title">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_note_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLength="750"
+                android:inputType="textMultiLine|text"
+                android:text="@{note.description}"
+                android:textSize="@dimen/_12ssp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/btn_record"
             android:layout_width="@dimen/_120sdp"
             android:layout_height="@dimen/_120sdp"
             android:layout_marginTop="@dimen/_16sdp"
-            android:padding="@dimen/_16sdp"
             android:background="@drawable/ic_circle"
+            android:backgroundTint="#BF000000"
+            android:padding="@dimen/_16sdp"
             app:editNoteVisible="@{note.audioLength}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/et_note_description"
+            app:layout_constraintTop_toBottomOf="@+id/til_note_description"
             app:srcCompat="@drawable/ic_baseline_play_recording" />
 
         <com.google.android.material.textview.MaterialTextView
@@ -141,6 +157,7 @@
             app:timeText="@{note.audioLength}"
             app:timerVisible="@{note.audioLength}"
             tools:text="00:00:00" />
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/bodyLayout"
             android:layout_width="0dp"

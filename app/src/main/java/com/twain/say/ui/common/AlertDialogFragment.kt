@@ -9,11 +9,11 @@ class AlertDialogFragment(context: Context) : MaterialAlertDialogBuilder(context
     lateinit var onResponse: (alertDialogInterface: DialogInterface, r: ResponseType) -> Unit
 
     enum class ResponseType {
-        YES, NO, CANCEL
+        YES, NO, OK, CANCEL
     }
 
     fun show(
-       alertDialogDetails: AlertDialogDetails,
+        alertDialogDetails: AlertDialogDetails,
         listener: (
             alertDialog: DialogInterface,
             rt: ResponseType
@@ -24,7 +24,7 @@ class AlertDialogFragment(context: Context) : MaterialAlertDialogBuilder(context
             setTitle(alertDialogDetails.alertTitle)
             setMessage(alertDialogDetails.alertMsg)
             setIcon(alertDialogDetails.iconRes)
-            setNegativeButton(alertDialogDetails.btnNegativeText) {dialog, _ ->
+            setNegativeButton(alertDialogDetails.btnNegativeText) { dialog, _ ->
                 onResponse(
                     dialog,
                     ResponseType.NO

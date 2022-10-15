@@ -61,10 +61,6 @@ abstract class BaseFragment<VM : ViewModel, VB : ViewBinding> : androidx.fragmen
         alertDialogProgressBar!!.dismiss()
     }
 
-    open fun showNoNetworkAlert() {
-        NetworkUtil.showNoInternetAlert(requireActivity())
-    }
-
     override fun onDestroyView() {
         _binding = null
         super.onDestroyView()

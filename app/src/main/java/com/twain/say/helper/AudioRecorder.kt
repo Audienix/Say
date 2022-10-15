@@ -107,7 +107,6 @@ class AudioRecorder(
         sayStopwatch?.apply {
             stop()
             note.audioLength = sayStopwatch!!.elapsedTime / 1000
-//            reset()
         }
         sayStopwatch = null
         if (note.audioLength <= 0)

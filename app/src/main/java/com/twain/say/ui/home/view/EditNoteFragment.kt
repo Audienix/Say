@@ -212,9 +212,8 @@ class EditNoteFragment : Fragment(), View.OnClickListener, TimePickerDialog.OnTi
                             startAlarm(requireContext(), pickedDateTime!!.timeInMillis, note)
                         navController.navigate(R.id.action_editNoteFragment_to_homeFragment)
                     } else {
-                        requireContext().getString(R.string.title_required)
-                            .showToast(requireContext(), Toast.LENGTH_SHORT)
                         etNoteTitle.requestFocus()
+                        tilNoteTitle.error =  requireContext().getString(R.string.title_required)
                     }
                 }
             }
@@ -265,12 +264,12 @@ class EditNoteFragment : Fragment(), View.OnClickListener, TimePickerDialog.OnTi
                 }
                 fabSaveNote -> {
                     if (etNoteTitle.text.toString().isNotBlank()) {
-                        audioRecorder.stopRecording()
                         if (_note.audioLength <= 0) {
                             context.getString(R.string.record_note_before_saving)
                                 .showToast(context, Toast.LENGTH_SHORT)
                             return
                         }
+                        audioRecorder.stopRecording()
                         val note = _note.copy(
                             title = etNoteTitle.text.toString().trim(),
                             description = etNoteDescription.text.toString().trim()
@@ -282,9 +281,8 @@ class EditNoteFragment : Fragment(), View.OnClickListener, TimePickerDialog.OnTi
                             startAlarm(context, pickedDateTime!!.timeInMillis, note)
                         navController.navigate(R.id.action_editNoteFragment_to_homeFragment)
                     } else {
-                        context.getString(R.string.title_required)
-                            .showToast(requireContext(), Toast.LENGTH_SHORT)
                         etNoteTitle.requestFocus()
+                        tilNoteTitle.error =  requireContext().getString(R.string.title_required)
                     }
                 }
             }

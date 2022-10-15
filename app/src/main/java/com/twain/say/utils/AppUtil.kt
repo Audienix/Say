@@ -18,9 +18,25 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 
 val colors = listOf(
-    -504764, -740056, -1544140, -2277816, -3246217, -4024195,
-    -4224594, -7305542, -7551917, -7583749, -10712898, -10896368, -10965321,
-    -11419154, -14654801
+    "#FFCDD2", //Red 100
+    "#F8BBD0", // Pink 100
+    "#E1BEE7", // Purple 100
+    "#D1C4E9", // Deep Purple 100
+    "#C5CAE9", // Indigo 100
+    "#BBDEFB", // Blue 100
+    "#B3E5FC", // Light Blue 100
+    "#B2EBF2", // Cyan 100
+    "#B2DFDB", // Teal 100
+    "#C8E6C9", // Green 100
+    "#DCEDC8", // Light Green 100
+    "#F0F4C3", // Lime 100
+    "#FFF9C4", // Yellow 100
+    "#FFECB3", // Amber 100
+    "#FFE0B2", // Orange 100
+    "#FFCCBC", // Deep Orange 100
+    "#D7CCC8", // Brown 100
+    "#F5F5F5", // Gray 100
+    "#CFD8DC"  // Blue Gray 100
 )
 
 fun filePath(activity: Activity) = activity.getExternalFilesDir("/")?.absolutePath

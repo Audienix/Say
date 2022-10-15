@@ -133,7 +133,7 @@ class HomeFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        statusBarColorFromResource(color.white)
+        statusBarColorFromResource(color.translucent_white)
     }
 
     override fun onDestroyView() {
