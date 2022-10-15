@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="?android:attr/actionBarSize"
     android:background="@color/translucent_white"
+    android:elevation="4dp"
     android:paddingTop="@dimen/_8sdp"
     android:paddingBottom="@dimen/_8sdp">
 
@@ -15,7 +16,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintWidth_percent="0.3"
+        app:layout_constraintWidth_percent="0.25"
         app:srcCompat="@drawable/ic_header_logo" />
 
     <androidx.appcompat.widget.AppCompatImageButton

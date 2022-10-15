@@ -50,6 +50,10 @@ fun requestPermission(activity: Activity, message: String, requestCode: Int, per
 
 fun currentDate(): Calendar = Calendar.getInstance()
 
+fun formatNoteDescription(description: String, context: Context): String {
+    return if (description.isEmpty()) context.resources.getString(R.string.no_description) else description
+}
+
 fun formatDate(date: Long, context: Context): String {
     val now = Date()
     val seconds = TimeUnit.MILLISECONDS.toSeconds(now.time - date)

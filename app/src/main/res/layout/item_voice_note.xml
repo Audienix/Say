@@ -110,7 +110,7 @@
                 android:ellipsize="end"
                 android:fontFamily="@font/open_sans_regular"
                 android:maxLines="2"
-                android:text="@{note.description}"
+                android:text="@{AppUtilKt.formatNoteDescription(note.description, context)}"
                 android:textAppearance="@style/TextAppearance.Material3.LabelMedium"
                 android:textColor="@color/black"
                 app:layout_constraintEnd_toEndOf="parent"
