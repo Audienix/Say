@@ -3,8 +3,9 @@ package com.twain.say.ui.home.view
 import android.Manifest
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
-import android.content.Context
 import android.os.Bundle
+import android.text.InputFilter
+import android.text.InputFilter.LengthFilter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,6 +22,7 @@ import androidx.navigation.fragment.navArgs
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.twain.say.MainActivity
 import com.twain.say.R
+import com.twain.say.constants.IntegerConstants
 import com.twain.say.data.model.AlertDialogDetails
 import com.twain.say.databinding.DialogEditReminderBinding
 import com.twain.say.databinding.FragmentEditNoteBinding
@@ -87,6 +89,11 @@ class EditNoteFragment : Fragment(), View.OnClickListener, TimePickerDialog.OnTi
         }
 
         binding.apply {
+            etNoteTitle.filters =
+                arrayOf<InputFilter>(LengthFilter(IntegerConstants.MAX_CHAR_COUNt_NOTE_TITLE))
+            etNoteDescription.filters =
+                arrayOf<InputFilter>(LengthFilter(IntegerConstants.MAX_CHAR_COUNt_NOTE_DESCRIPTION))
+
             btnBack.setOnClickListener {
                 navController.navigate(R.id.action_editNoteFragment_to_homeFragment)
             }
@@ -197,7 +204,7 @@ class EditNoteFragment : Fragment(), View.OnClickListener, TimePickerDialog.OnTi
         binding.apply {
             when (p0) {
                 btnRecord -> {
-                   audioRecorder.manageExistingAudioRecording()
+                    audioRecorder.manageExistingAudioRecording()
                 }
                 fabSaveNote -> {
                     val note = _note.copy(
@@ -213,7 +220,7 @@ class EditNoteFragment : Fragment(), View.OnClickListener, TimePickerDialog.OnTi
                         navController.navigate(R.id.action_editNoteFragment_to_homeFragment)
                     } else {
                         etNoteTitle.requestFocus()
-                        tilNoteTitle.error =  requireContext().getString(R.string.title_required)
+                        tilNoteTitle.error = requireContext().getString(R.string.title_required)
                     }
                 }
             }
@@ -282,7 +289,7 @@ class EditNoteFragment : Fragment(), View.OnClickListener, TimePickerDialog.OnTi
                         navController.navigate(R.id.action_editNoteFragment_to_homeFragment)
                     } else {
                         etNoteTitle.requestFocus()
-                        tilNoteTitle.error =  requireContext().getString(R.string.title_required)
+                        tilNoteTitle.error = requireContext().getString(R.string.title_required)
                     }
                 }
             }
@@ -321,6 +328,7 @@ class EditNoteFragment : Fragment(), View.OnClickListener, TimePickerDialog.OnTi
                 pickDate()
             }
         }
+        bottomSheetDialog.dismissWithAnimation = true
         bottomSheetDialog.edgeToEdgeEnabled
         bottomSheetDialog.setContentView(view.root)
         bottomSheetDialog.show()
@@ -336,14 +344,13 @@ class EditNoteFragment : Fragment(), View.OnClickListener, TimePickerDialog.OnTi
             true
         )
         AlertDialogFragment(requireContext()).show(alertDlg) { dialog, response ->
-           if(response == AlertDialogFragment.ResponseType.YES){
-               viewModel.deleteNote(_note)
-               lifecycleScope.launch(Dispatchers.IO) { recordingFile?.delete() }
-               navController.navigate(R.id.action_editNoteFragment_to_homeFragment)
-           }
-            else if(response == AlertDialogFragment.ResponseType.NO){
-               dialog.dismiss()
-           }
+            if (response == AlertDialogFragment.ResponseType.YES) {
+                viewModel.deleteNote(_note)
+                lifecycleScope.launch(Dispatchers.IO) { recordingFile?.delete() }
+                navController.navigate(R.id.action_editNoteFragment_to_homeFragment)
+            } else if (response == AlertDialogFragment.ResponseType.NO) {
+                dialog.dismiss()
+            }
         }
     }
 }

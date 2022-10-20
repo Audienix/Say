@@ -9,26 +9,28 @@ plugins {
 
 android {
     compileSdk 33
-
+    lintOptions {
+        baseline(file("lint-baseline.xml"))
+    }
     defaultConfig {
         applicationId "com.twain.say"
         minSdk 23
         targetSdk 33
         versionCode 1
-        versionName "1.0.0"
-
+        versionName "0.0.2"
+        archivesBaseName = "say_v${versionName}"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
         release {
-            minifyEnabled false
-            shrinkResources false
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         applicationVariants.all { variant ->
             variant.outputs.all {
-                outputFileName = "${archivesBaseName}_${variant.buildType.name}_${defaultConfig.versionName}.apk"
+                outputFileName = "${archivesBaseName}_${variant.buildType.name}.apk"
             }
         }
     }

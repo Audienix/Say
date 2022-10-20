@@ -71,106 +71,125 @@
             app:visible="@{uiState == UIState.HAS_DATA}"
             tools:ignore="TouchTargetSizeCheck" />
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/til_note_title"
-            style="?attr/textInputOutlinedStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_16sdp"
-            android:layout_marginTop="@dimen/_8sdp"
-            android:layout_marginEnd="@dimen/_16sdp"
-            android:hint="@string/note_hint_title"
-            app:counterEnabled="true"
-            app:counterMaxLength="50"
-            app:errorEnabled="true"
-            app:errorTextColor="@color/design_default_color_error"
-            app:boxStrokeErrorColor="?attr/colorError"
-            app:endIconMode="clear_text"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btn_back">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/et_note_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textCapSentences"
-                android:maxLength="50"
-                android:text="@{note.title}"
-                android:textSize="@dimen/_12ssp" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/til_note_description"
-            style="?attr/textInputOutlinedStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_16sdp"
-            android:layout_marginTop="@dimen/_8sdp"
-            android:layout_marginEnd="@dimen/_16sdp"
-            android:hint="@string/note_hint_description"
-            app:counterEnabled="true"
-            app:counterMaxLength="500"
-            app:endIconMode="clear_text"
-            app:layout_constraintEnd_toEndOf="@+id/til_note_title"
-            app:layout_constraintStart_toStartOf="@+id/til_note_title"
-            app:layout_constraintTop_toBottomOf="@+id/til_note_title">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/et_note_description"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:maxLength="750"
-                android:inputType="textMultiLine|text"
-                android:text="@{note.description}"
-                android:textSize="@dimen/_12ssp" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/btn_record"
-            android:layout_width="@dimen/_120sdp"
-            android:layout_height="@dimen/_120sdp"
-            android:layout_marginTop="@dimen/_16sdp"
-            android:background="@drawable/ic_circle"
-            android:backgroundTint="#BF000000"
-            android:padding="@dimen/_16sdp"
-            app:editNoteVisible="@{note.audioLength}"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/til_note_description"
-            app:srcCompat="@drawable/ic_baseline_play_recording" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/tv_timer"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_8sdp"
-            android:fontFamily="@font/open_sans_regular"
-            android:gravity="center"
-            android:textColor="@color/black_day_white_night"
-            android:textSize="@dimen/_20ssp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btn_record"
-            app:timeText="@{note.audioLength}"
-            app:timerVisible="@{note.audioLength}"
-            tools:text="00:00:00" />
-
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <ScrollView
             android:id="@+id/bodyLayout"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_16sdp"
-            android:layout_marginEnd="@dimen/_16sdp"
-            android:paddingTop="@dimen/_8sdp"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@id/card_add_reminder"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/btn_back">
 
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_16sdp"
+                android:layout_marginEnd="@dimen/_16sdp"
+                android:paddingTop="@dimen/_8sdp">
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_note_title"
+                    style="?attr/textInputOutlinedStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:hint="@string/note_hint_title"
+                    app:boxStrokeErrorColor="?attr/colorError"
+                    app:counterEnabled="true"
+                    app:counterMaxLength="50"
+                    app:endIconMode="clear_text"
+                    app:errorEnabled="true"
+                    app:errorTextColor="@color/design_default_color_error"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_note_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textCapSentences"
+                        android:maxLength="50"
+                        android:text="@{note.title}"
+                        android:textSize="@dimen/_12ssp" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_note_description"
+                    style="?attr/textInputOutlinedStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:hint="@string/note_hint_description"
+                    app:counterEnabled="true"
+                    app:counterMaxLength="500"
+                    app:endIconMode="clear_text"
+                    app:layout_constraintEnd_toEndOf="@+id/til_note_title"
+                    app:layout_constraintStart_toStartOf="@+id/til_note_title"
+                    app:layout_constraintTop_toBottomOf="@+id/til_note_title">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_note_description"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textCapSentences|textMultiLine"
+                        android:maxLength="500"
+                        android:text="@{note.description}"
+                        android:textSize="@dimen/_12ssp" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/tv_record_Header"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:layout_marginBottom="@dimen/_8sdp"
+                    android:fontFamily="@font/open_sans_regular"
+                    android:text="Record your note"
+                    android:textColor="@color/black_day_white_night"
+                    android:textSize="@dimen/_14sdp"
+                    app:layout_constraintBottom_toTopOf="@id/btn_record"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/til_note_description"
+                    app:timerVisible="@{note.audioLength}" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/btn_record"
+                    android:layout_width="@dimen/_120sdp"
+                    android:layout_height="@dimen/_120sdp"
+                    android:layout_marginTop="@dimen/_16sdp"
+                    android:background="@drawable/ic_circle"
+                    android:backgroundTint="#BF000000"
+                    android:padding="@dimen/_16sdp"
+                    app:editNoteVisible="@{note.audioLength}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_record_Header"
+                    app:srcCompat="@drawable/ic_baseline_play_recording" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/tv_timer"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:layout_marginBottom="@dimen/_8sdp"
+                    android:fontFamily="@font/open_sans_regular"
+                    android:gravity="center"
+                    android:textColor="@color/black_day_white_night"
+                    android:textSize="@dimen/_20ssp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/btn_record"
+                    app:timeText="@{note.audioLength}"
+                    app:timerVisible="@{note.audioLength}"
+                    tools:text="00:00:00" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
 
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
             android:id="@+id/fab_save_note"
