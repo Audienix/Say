@@ -4,14 +4,17 @@ import android.Manifest
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.os.Bundle
+import android.text.Editable
 import android.text.InputFilter
 import android.text.InputFilter.LengthFilter
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.DatePicker
 import android.widget.TimePicker
 import android.widget.Toast
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -79,7 +82,11 @@ class EditNoteFragment : Fragment(), View.OnClickListener, TimePickerDialog.OnTi
             binding.tvTimer,
             _note
         )
+        bindingNonView()
+        bindingView()
+    }
 
+    private fun bindingNonView() {
         binding.lifecycleOwner = this
         binding.apply {
             note = _note
@@ -87,7 +94,9 @@ class EditNoteFragment : Fragment(), View.OnClickListener, TimePickerDialog.OnTi
             reminderAvailableState = viewModel.reminderAvailableState
             reminderCompletionState = viewModel.reminderCompletionState
         }
+    }
 
+    private fun bindingView() {
         binding.apply {
             etNoteTitle.filters =
                 arrayOf<InputFilter>(LengthFilter(IntegerConstants.MAX_CHAR_COUNt_NOTE_TITLE))
@@ -106,7 +115,25 @@ class EditNoteFragment : Fragment(), View.OnClickListener, TimePickerDialog.OnTi
             btnDelete.setOnClickListener { launchDeleteNoteDialog() }
             btnRecord.setOnClickListener(this@EditNoteFragment)
             fabSaveNote.setOnClickListener(this@EditNoteFragment)
+            etNoteTitle.addTextChangedListener(object : TextWatcher {
+                override fun afterTextChanged(s: Editable?) {
+                    if (s?.isNotEmpty() == true)
+                        tilNoteTitle.error = null
+                    else
+                        tilNoteTitle.error = requireContext().getString(R.string.title_required)
+                }
 
+                override fun beforeTextChanged(
+                    s: CharSequence?,
+                    start: Int,
+                    count: Int,
+                    after: Int
+                ) {
+                }
+
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                }
+            })
             if (args.note.id == 0) {
                 btnRecord.setImageDrawable(
                     ResourcesCompat.getDrawable(

@@ -20,8 +20,8 @@
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:background="@android:color/white"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@android:color/white">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -37,8 +37,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_8sdp"
-                android:layout_marginEnd="@dimen/_8sdp"
                 android:layout_marginTop="@dimen/_16sdp"
+                android:layout_marginEnd="@dimen/_8sdp"
                 android:layout_marginBottom="@dimen/_8sdp"
                 android:background="@drawable/gray_back_round_corners_search"
                 android:backgroundTint="#F3F3F3"
@@ -46,6 +46,7 @@
                 android:drawablePadding="10dp"
                 android:hint="@string/search_your_voice_note"
                 android:imeOptions="actionSearch"
+                android:importantForAutofill="no"
                 android:inputType="text"
                 android:padding="@dimen/_8sdp"
                 android:textAppearance="@style/TextAppearance.Material3.LabelLarge"
@@ -62,6 +63,8 @@
                 android:layout_height="0dp"
                 android:layout_margin="@dimen/_8sdp"
                 android:visibility="gone"
+                android:clipToPadding="false"
+                android:paddingBottom="@dimen/_60sdp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
