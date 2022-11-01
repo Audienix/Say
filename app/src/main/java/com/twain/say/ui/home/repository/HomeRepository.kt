@@ -1,5 +1,6 @@
 package com.twain.say.ui.home.repository
 
+import androidx.annotation.WorkerThread
 import com.twain.say.ui.home.data.dao.AudioNotesDAO
 import com.twain.say.ui.home.model.Note
 import kotlinx.coroutines.flow.Flow
@@ -24,4 +25,9 @@ class HomeRepository @Inject constructor(private val audioNotesDAO: AudioNotesDA
     }
 
     fun getNote(noteId: Int): Flow<Note> = audioNotesDAO.getNote(noteId)
+
+    @WorkerThread
+    fun searchNote(searchQuery: String): Flow<List<Note>> =
+        audioNotesDAO.getSearchResults(searchQuery)
+
 }

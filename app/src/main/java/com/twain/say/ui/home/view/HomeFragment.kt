@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.PopupMenu
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -88,6 +89,23 @@ class HomeFragment : Fragment() {
                 else
                     bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
             }
+
+            searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    if (query != null) {
+                        getItemsFromDb(query)
+                    }
+                    return true
+                }
+
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    if (newText != null) {
+                        getItemsFromDb(newText)
+                    }
+                    return true
+                }
+
+            })
         }
         viewModel.apply {
             notes.observe(viewLifecycleOwner) {
@@ -160,5 +178,15 @@ class HomeFragment : Fragment() {
                 dialog.dismiss()
             }
         }
+    }
+
+    private fun getItemsFromDb(searchText: String) {
+        val searchQuery = "%$searchText%"
+
+        viewModel.searchNotes(query = searchQuery).observe(this) { list ->
+            adapter.submitList(list)
+
+        }
+
     }
 }

@@ -16,6 +16,7 @@ class NoteListAdapter(
     val context: Context,
     val noteEditClickListener: (View, Note, Int) -> Unit
 ) : ListAdapter<Note, NoteListAdapter.NoteListViewHolder>(DIFF_CALLBACK) {
+
     private var audioRecorder: AudioRecorder? = null
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteListViewHolder {
         val binding =

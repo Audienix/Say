@@ -21,4 +21,7 @@ interface AudioNotesDAO {
 
     @Query("SELECT * FROM notes_table ORDER BY id DESC")
     fun getAllNotes(): Flow<List<Note>>
+
+    @Query("Select * from notes_table where title like :query OR description like :query")
+    fun getSearchResults(query: String): Flow<List<Note>>
 }

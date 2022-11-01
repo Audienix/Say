@@ -49,4 +49,8 @@ class HomeViewModel @Inject constructor(private val homeRepository: HomeReposito
     }
 
     fun getNote(noteId: Int): LiveData<Note> = homeRepository.getNote(noteId).asLiveData()
+
+    fun searchNotes(query: String) : LiveData<List<Note>> {
+        return homeRepository.searchNote(query).asLiveData()
+    }
 }

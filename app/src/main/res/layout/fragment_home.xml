@@ -32,7 +32,7 @@
                 android:id="@+id/toolbar"
                 layout="@layout/layout_toolbar" />
 
-            <EditText
+            <androidx.appcompat.widget.SearchView
                 android:id="@+id/searchView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -41,17 +41,10 @@
                 android:layout_marginEnd="@dimen/_8sdp"
                 android:layout_marginBottom="@dimen/_8sdp"
                 android:background="@drawable/gray_back_round_corners_search"
-                android:backgroundTint="#F3F3F3"
-                android:drawableStart="@drawable/ic_search_white_24dp"
-                android:drawablePadding="10dp"
-                android:hint="@string/search_your_voice_note"
-                android:imeOptions="actionSearch"
-                android:importantForAutofill="no"
-                android:inputType="text"
-                android:padding="@dimen/_8sdp"
-                android:textAppearance="@style/TextAppearance.Material3.LabelLarge"
-                app:fontFamily="@font/open_sans_regular"
-                app:hintTextColor="@color/grey"
+                android:backgroundTint="@color/translucent_white"
+                app:iconifiedByDefault="false"
+                app:queryBackground="@android:color/transparent"
+                app:queryHint="@string/search_your_voice_note"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/toolbar"
