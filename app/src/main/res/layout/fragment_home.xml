@@ -43,11 +43,11 @@
                 android:background="@drawable/gray_back_round_corners_search"
                 android:backgroundTint="@color/translucent_white"
                 app:iconifiedByDefault="false"
-                app:queryBackground="@android:color/transparent"
-                app:queryHint="@string/search_your_voice_note"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/toolbar"
+                app:queryBackground="@android:color/transparent"
+                app:queryHint="@string/search_your_voice_note"
                 app:visible="@{uiState == UIState.HAS_DATA}" />
 
             <androidx.recyclerview.widget.RecyclerView
@@ -55,9 +55,9 @@
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_margin="@dimen/_8sdp"
-                android:visibility="gone"
                 android:clipToPadding="false"
                 android:paddingBottom="@dimen/_60sdp"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -70,31 +70,30 @@
                 android:id="@+id/iv_empty_notes"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
+                app:layout_constraintHeight_percent="0.3"
+                app:layout_constraintWidth_percent="0.7"
                 android:layout_margin="@dimen/_8sdp"
-                android:src="@drawable/ic_home_empty"
-                app:layout_constraintBottom_toTopOf="@+id/fab_add_note"
+                android:src="@drawable/ic_no_data"
+                app:layout_constraintBottom_toBottomOf="@id/guideline"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toStartOf="@+id/toolbar"
-                app:layout_constraintTop_toBottomOf="@+id/searchView"
-                app:layout_constraintVertical_bias="1.0" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/guideline" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/tv_empty_notes"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/_8sdp"
                 android:fontFamily="@font/open_sans_regular"
-                android:paddingStart="@dimen/_16sdp"
-                android:paddingEnd="@dimen/_16sdp"
+                android:paddingStart="@dimen/_8sdp"
+                android:paddingEnd="@dimen/_8sdp"
                 android:text="@string/empty_notes_list"
                 android:textAlignment="center"
                 android:textColor="@color/primary_darker"
                 android:textSize="@dimen/_12ssp"
-                app:fontFamily="@font/open_sans_semi_bold"
-                app:layout_constraintBottom_toBottomOf="@+id/iv_empty_notes"
-                app:layout_constraintEnd_toEndOf="@+id/iv_empty_notes"
-                app:layout_constraintStart_toStartOf="@+id/iv_empty_notes" />
+                app:fontFamily="@font/open_sans_medium"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/iv_empty_notes" />
 
             <androidx.constraintlayout.widget.Group
                 android:id="@+id/group_empty_notes"
@@ -117,6 +116,13 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:srcCompat="@drawable/ic_baseline_voice"
                 app:tint="@color/white" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.5"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

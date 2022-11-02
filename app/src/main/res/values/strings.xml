@@ -19,6 +19,7 @@
     <string name="welcome_back">Welcome back</string>
     <string name="search_your_voice_note">Search your voice notes</string>
     <string name="empty_notes_list">Your voice bank is empty.\nClick the button below to get started.</string>
+    <string name="no_notes_list">Your voice bank does not have any matched note.\nTry with other keyword.</string>
     <string name="about">About</string>
     <string name="app_version" translatable="false">v0.1.4(04032022)</string>
     <string name="attributions_amp_licence"><![CDATA[Attributions & Licence]]></string>

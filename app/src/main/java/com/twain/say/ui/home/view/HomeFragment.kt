@@ -1,5 +1,6 @@
 package com.twain.say.ui.home.view
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -90,17 +91,17 @@ class HomeFragment : Fragment() {
                     bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
             }
 
-            searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
+            searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String?): Boolean {
                     if (query != null) {
-                        getItemsFromDb(query)
+                        getSearchedItemsFromDb(query)
                     }
                     return true
                 }
 
                 override fun onQueryTextChange(newText: String?): Boolean {
                     if (newText != null) {
-                        getItemsFromDb(newText)
+                        getSearchedItemsFromDb(newText)
                     }
                     return true
                 }
@@ -135,14 +136,15 @@ class HomeFragment : Fragment() {
         popupMenu.menuInflater.inflate(menu.menu_note_card, popupMenu.menu)
         popupMenu.setOnMenuItemClickListener { item ->
             when (item.itemId) {
-                R.id.action_show_info -> {}
                 R.id.action_edit
                 -> {
                     val action =
                         HomeFragmentDirections.actionHomeFragmentToEditNoteFragment(note)
                     navController.navigate(action)
                 }
-                R.id.action_delete -> {launchDeleteNoteDialog(note)}
+                R.id.action_delete -> {
+                    launchDeleteNoteDialog(note)
+                }
             }
             true
         }
@@ -169,23 +171,35 @@ class HomeFragment : Fragment() {
             true
         )
         AlertDialogFragment(requireContext()).show(alertDlg) { dialog, response ->
-            if(response == AlertDialogFragment.ResponseType.YES){
+            if (response == AlertDialogFragment.ResponseType.YES) {
                 viewModel.deleteNote(note)
                 lifecycleScope.launch(Dispatchers.IO) { File(note.filePath).delete() }
                 dialog.dismiss()
-            }
-            else if(response == AlertDialogFragment.ResponseType.NO){
+            } else if (response == AlertDialogFragment.ResponseType.NO) {
                 dialog.dismiss()
             }
         }
     }
 
-    private fun getItemsFromDb(searchText: String) {
+    private fun getSearchedItemsFromDb(searchText: String) {
         val searchQuery = "%$searchText%"
 
         viewModel.searchNotes(query = searchQuery).observe(this) { list ->
-            adapter.submitList(list)
+            if (list.isNotEmpty()) {
+                adapter.submitList(list)
+                binding.recyclerViewNotes.visibility = View.VISIBLE
 
+                binding.ivEmptyNotes.visibility = View.GONE
+                binding.tvEmptyNotes.visibility = View.GONE
+            } else {
+                binding.recyclerViewNotes.visibility = View.GONE
+
+                binding.tvEmptyNotes.text = resources.getString(string.no_notes_list)
+                binding.tvEmptyNotes.setTextColor(Color.RED)
+                binding.ivEmptyNotes.setImageResource(drawable.ic_no_records)
+                binding.ivEmptyNotes.visibility = View.VISIBLE
+                binding.tvEmptyNotes.visibility = View.VISIBLE
+            }
         }
 
     }

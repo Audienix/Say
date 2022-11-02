@@ -40,7 +40,7 @@ class NoteListAdapter(
 
         override fun onClick(p0: View?) {
             if (p0?.id == R.id.btn_play) {
-                if (audioRecorder == null)
+//                if (audioRecorder == null)
                     audioRecorder = AudioRecorder(
                         context,
                         binding.btnPlay,
