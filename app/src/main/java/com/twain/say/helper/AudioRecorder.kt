@@ -5,6 +5,7 @@ import android.content.Context
 import android.media.MediaPlayer
 import android.media.MediaRecorder
 import android.util.Log
+import android.widget.SeekBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.AppCompatImageView
@@ -27,22 +28,35 @@ class AudioRecorder(
     private val context: Context,
     private val btnRecord: AppCompatImageView,
     private val tvTimer: TextView,
-    private val note: Note
+    private val note: Note,
+    private val seekbar: SeekBar? = null
 ) :
     OnStopwatchTickListener,
     OnTimerTickListener {
 
-    private val TAG = this::class.qualifiedName
+    private val logTag = this::class.qualifiedName
     private var sayTimer: SayTimer? = null
     private var isPlayingRecord = false
+    private var isRecording = false
     private var sayStopwatch: SayStopwatch? = null
-    private var mediaPlayer: MediaPlayer? = null
-    private var mediaRecorder: MediaRecorder? = null
+    private lateinit var mediaPlayer: MediaPlayer
+    private lateinit var mediaRecorder: MediaRecorder
 
     init {
         sayStopwatch = SayStopwatch()
         sayStopwatch!!.setOnTickListener(this)
         sayStopwatch!!.setTextView(tvTimer)
+        seekbar?.setOnSeekBarChangeListener( object: SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {
+            }
+
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {
+            }
+
+        })
     }
 
     override fun onStopwatchTick(stopwatch: SayStopwatch?) {
@@ -50,6 +64,7 @@ class AudioRecorder(
     }
 
     override fun onTimerTick(timer: SayTimer?) {
+        seekbar?.progress = mediaPlayer.currentPosition
     }
 
     override fun onTimerCompletion(timer: SayTimer?) {
@@ -92,6 +107,7 @@ class AudioRecorder(
                 prepare()
                 start()
                 sayStopwatch!!.start()
+                isRecording = true
             } catch (e: IOException) {
                 context.getString(R.string.error_occurred)
                     .showToast(context, Toast.LENGTH_SHORT)
@@ -100,16 +116,17 @@ class AudioRecorder(
     }
 
     fun stopRecording() {
-        mediaRecorder?.apply {
-            stop()
-            release()
+        mediaRecorder.apply {
+            if(isRecording) {
+                stop()
+                release()
+                isRecording = false
+            }
         }
-        mediaRecorder = null
         sayStopwatch?.apply {
             stop()
             note.audioLength = sayStopwatch!!.elapsedTime / 1000
         }
-        sayStopwatch = null
         if (note.audioLength <= 0)
             return
         val file = File(note.filePath)
@@ -121,15 +138,18 @@ class AudioRecorder(
     }
 
     private fun startPlayingRecording() {
-        sayTimer = SayTimer(note.audioLength * IntegerConstants.TIME_DURATION)
+        val recordingDuration = note.audioLength * IntegerConstants.TIME_DURATION
+        sayTimer = SayTimer(recordingDuration)
         sayTimer!!.setTextView(tvTimer)
         sayTimer!!.setOnTickListener(this)
         mediaPlayer = MediaPlayer()
         try {
-            mediaPlayer?.apply {
+            mediaPlayer.apply {
                 val file = File(note.filePath)
                 setDataSource(file.absolutePath)
                 prepare()
+                if (seekbar != null)
+                    seekbar.max = duration
                 start()
             }
             if (!sayTimer!!.isStarted) sayTimer!!.start()
@@ -145,17 +165,17 @@ class AudioRecorder(
     }
 
     private fun pausePlayingRecording() {
-        mediaPlayer?.pause()
+        mediaPlayer.pause()
         if (!sayTimer!!.isPaused && sayTimer!!.isStarted) sayTimer!!.pause()
     }
 
     private fun resumePlayingRecording() {
-        mediaPlayer?.start()
+        mediaPlayer.start()
         if (sayTimer!!.isPaused) sayTimer!!.resume()
     }
 
     private fun stopPlayingRecording() {
-        mediaPlayer?.apply {
+        mediaPlayer.apply {
             stop()
             release()
         }
@@ -180,23 +200,21 @@ class AudioRecorder(
 
     fun cleanupResource() {
         try {
-            mediaRecorder?.apply {
+            mediaRecorder.apply {
                 stop()
                 release()
             }
-            mediaPlayer?.apply {
+            mediaPlayer.apply {
                 if (isPlaying) {
                     stop()
                     release()
                 }
             }
-            mediaRecorder = null
-            mediaPlayer = null
             stopTimer()
             finishStopWatch()
         } catch (illegalStateException: IllegalStateException) {
-            illegalStateException.message?.let { Log.d(TAG, it) }
-            Log.d(TAG, illegalStateException.stackTraceToString())
+            illegalStateException.message?.let { Log.d(logTag, it) }
+            Log.d(logTag, illegalStateException.stackTraceToString())
         }
         catch (exception: Exception)
         {}

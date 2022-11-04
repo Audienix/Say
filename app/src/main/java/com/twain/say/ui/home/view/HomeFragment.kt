@@ -129,7 +129,8 @@ class HomeFragment : Fragment(){
                         requireContext(),
                         btnPlay,
                         tvTimer,
-                        _note
+                        _note,
+                        seekbar
                     )
                 }
                 audioRecorder?.manageExistingAudioRecording()

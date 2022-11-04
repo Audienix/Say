@@ -108,6 +108,7 @@
             android:layout_marginEnd="@dimen/_8sdp"
             android:layout_marginBottom="@dimen/_8sdp"
             android:progress="0"
+            android:clickable="false"
             android:progressTint="@color/black_day_white_night"
             android:thumbTint="@color/black_day_white_night"
             app:layout_constraintBottom_toBottomOf="parent"
