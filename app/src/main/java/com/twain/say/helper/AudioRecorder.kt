@@ -32,7 +32,8 @@ class AudioRecorder(
     OnStopwatchTickListener,
     OnTimerTickListener {
 
-    var sayTimer: SayTimer? = null
+    private val TAG = this::class.qualifiedName
+    private var sayTimer: SayTimer? = null
     private var isPlayingRecord = false
     private var sayStopwatch: SayStopwatch? = null
     private var mediaPlayer: MediaPlayer? = null
@@ -178,20 +179,27 @@ class AudioRecorder(
     }
 
     fun cleanupResource() {
-        mediaRecorder?.apply {
-            stop()
-            release()
-        }
-        mediaPlayer?.apply {
-            if(isPlaying) {
+        try {
+            mediaRecorder?.apply {
                 stop()
                 release()
             }
+            mediaPlayer?.apply {
+                if (isPlaying) {
+                    stop()
+                    release()
+                }
+            }
+            mediaRecorder = null
+            mediaPlayer = null
+            stopTimer()
+            finishStopWatch()
+        } catch (illegalStateException: IllegalStateException) {
+            illegalStateException.message?.let { Log.d(TAG, it) }
+            Log.d(TAG, illegalStateException.stackTraceToString())
         }
-        mediaRecorder = null
-        mediaPlayer = null
-        stopTimer()
-        finishStopWatch()
+        catch (exception: Exception)
+        {}
     }
 
     fun manageExistingAudioRecording() {

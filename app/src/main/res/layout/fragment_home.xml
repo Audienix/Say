@@ -126,10 +126,5 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <include
-            android:id="@+id/bottom_sheet_dialog_layout"
-            layout="@layout/bsheet_dialog_now_playing"
-            android:visibility="gone" />
-
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

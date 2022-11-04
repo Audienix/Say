@@ -14,11 +14,13 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.twain.say.R
 import com.twain.say.R.*
 import com.twain.say.data.model.AlertDialogDetails
+import com.twain.say.databinding.BsheetDialogNowPlayingBinding
 import com.twain.say.databinding.FragmentHomeBinding
+import com.twain.say.helper.AudioRecorder
 import com.twain.say.ui.common.AlertDialogFragment
 import com.twain.say.ui.home.model.Note
 import com.twain.say.ui.home.repository.HomeRepository
@@ -33,10 +35,11 @@ import javax.inject.Inject
 
 
 @AndroidEntryPoint
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment(){
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
+    private var audioRecorder: AudioRecorder? = null
 
     @Inject
     lateinit var repository: HomeRepository
@@ -71,26 +74,6 @@ class HomeFragment : Fragment() {
 
             setUpRecyclerView(recyclerViewNotes)
 
-            val bottomSheetBehavior =
-                BottomSheetBehavior.from(bottomSheetDialogLayout.bottomSheetDialog)
-            bottomSheetBehavior.addBottomSheetCallback(object :
-                BottomSheetBehavior.BottomSheetCallback() {
-                override fun onStateChanged(bottomSheet: View, newState: Int) {
-                    if (newState == BottomSheetBehavior.STATE_HIDDEN)
-                        bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-                }
-
-                override fun onSlide(bottomSheet: View, slideOffset: Float) {
-//                    Unused
-                }
-            })
-            bottomSheetDialogLayout.linearLayoutCompat.setOnClickListener {
-                if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED)
-                    bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
-                else
-                    bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-            }
-
             searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String?): Boolean {
                     if (query != null) {
@@ -120,15 +103,49 @@ class HomeFragment : Fragment() {
     }
 
     private fun setUpRecyclerView(recyclerViewNotes: RecyclerView) {
-        adapter = NoteListAdapter(requireActivity()) { view: View, note: Note, _: Int ->
-            showNoteActionMenu(view, note)
-        }
+        adapter =
+            NoteListAdapter(requireActivity()) { view: View, note: Note, playAudioNote: Boolean ->
+                if (playAudioNote)
+                    showAudioPlayerBottomSheet(note)
+                else
+                    showNoteActionMenu(view, note)
+            }
         val layoutManager =
             GridLayoutManager(requireContext(), 1)
         recyclerViewNotes.also {
             it.layoutManager = layoutManager
             it.adapter = adapter
         }
+    }
+
+    private fun showAudioPlayerBottomSheet(_note: Note) {
+        val bindingView = BsheetDialogNowPlayingBinding.inflate(layoutInflater)
+        val bottomSheetDialog = BottomSheetDialog(requireContext())
+        bindingView.apply {
+            note = _note
+            btnPlay.setOnClickListener {
+                if (audioRecorder == null) {
+                    audioRecorder = AudioRecorder(
+                        requireContext(),
+                        btnPlay,
+                        tvTimer,
+                        _note
+                    )
+                }
+                audioRecorder?.manageExistingAudioRecording()
+            }
+            ivClose.setOnClickListener { bottomSheetDialog.dismiss() }
+        }
+        bottomSheetDialog.dismissWithAnimation = true
+        bottomSheetDialog.edgeToEdgeEnabled
+        bottomSheetDialog.setContentView(bindingView.root)
+        bottomSheetDialog.setCanceledOnTouchOutside(false)
+        bottomSheetDialog.setOnDismissListener {
+            audioRecorder?.cleanupResource()
+            audioRecorder = null
+        }
+        bottomSheetDialog.show()
+
     }
 
     private fun showNoteActionMenu(view: View, note: Note) {
@@ -201,6 +218,5 @@ class HomeFragment : Fragment() {
                 binding.tvEmptyNotes.visibility = View.VISIBLE
             }
         }
-
     }
 }

@@ -14,10 +14,9 @@ import com.twain.say.ui.home.model.Note
 
 class NoteListAdapter(
     val context: Context,
-    val noteEditClickListener: (View, Note, Int) -> Unit
+    val noteEditClickListener: (View, Note, Boolean) -> Unit
 ) : ListAdapter<Note, NoteListAdapter.NoteListViewHolder>(DIFF_CALLBACK) {
 
-    private var audioRecorder: AudioRecorder? = null
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteListViewHolder {
         val binding =
             ItemVoiceNoteBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -30,26 +29,17 @@ class NoteListAdapter(
 
     inner class NoteListViewHolder(private val binding: ItemVoiceNoteBinding) :
         RecyclerView.ViewHolder(binding.root), View.OnClickListener {
-        private lateinit var note: Note
         fun bind(note: Note) {
             binding.note = note
-            this.note = note
             binding.btnPlay.setOnClickListener(this)
             binding.tvNoteMenu.setOnClickListener(this)
         }
 
         override fun onClick(p0: View?) {
             if (p0?.id == R.id.btn_play) {
-//                if (audioRecorder == null)
-                    audioRecorder = AudioRecorder(
-                        context,
-                        binding.btnPlay,
-                        binding.tvRecordLength,
-                        this.note
-                    )
-                audioRecorder?.manageExistingAudioRecording()
+                noteEditClickListener(p0, getItem(adapterPosition), true)
             } else if (p0?.id == R.id.tv_note_menu)
-                noteEditClickListener(p0, getItem(adapterPosition), adapterPosition)
+                noteEditClickListener(p0, getItem(adapterPosition), false)
         }
     }
 

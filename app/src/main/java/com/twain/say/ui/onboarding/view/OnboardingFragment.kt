@@ -13,6 +13,7 @@ import com.twain.say.R
 import com.twain.say.databinding.FragmentOnboardingBinding
 import com.twain.say.ui.onboarding.model.SliderItem
 import com.twain.say.utils.Extensions.dataStore
+import com.twain.say.utils.Extensions.statusBarColorFromResource
 import com.twain.say.utils.PreferenceKeys
 import kotlinx.coroutines.launch
 
@@ -45,6 +46,11 @@ class OnboardingFragment : Fragment() {
                 findNavController().navigate(R.id.action_onboardingFragment_to_homeFragment)
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        statusBarColorFromResource(R.color.translucent_white)
     }
 
     override fun onDestroyView() {

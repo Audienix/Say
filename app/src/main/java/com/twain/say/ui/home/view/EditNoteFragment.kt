@@ -14,7 +14,6 @@ import android.view.ViewGroup
 import android.widget.DatePicker
 import android.widget.TimePicker
 import android.widget.Toast
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -99,9 +98,9 @@ class EditNoteFragment : Fragment(), View.OnClickListener, TimePickerDialog.OnTi
     private fun bindingView() {
         binding.apply {
             etNoteTitle.filters =
-                arrayOf<InputFilter>(LengthFilter(IntegerConstants.MAX_CHAR_COUNt_NOTE_TITLE))
+                arrayOf<InputFilter>(LengthFilter(IntegerConstants.MAX_CHAR_COUNT_NOTE_TITLE))
             etNoteDescription.filters =
-                arrayOf<InputFilter>(LengthFilter(IntegerConstants.MAX_CHAR_COUNt_NOTE_DESCRIPTION))
+                arrayOf<InputFilter>(LengthFilter(IntegerConstants.MAX_CHAR_COUNT_NOTE_DESCRIPTION))
 
             btnBack.setOnClickListener {
                 navController.navigate(R.id.action_editNoteFragment_to_homeFragment)
@@ -135,6 +134,7 @@ class EditNoteFragment : Fragment(), View.OnClickListener, TimePickerDialog.OnTi
                 }
             })
             if (args.note.id == 0) {
+                binding.tvToolbarText.text = resources.getString(R.string.create_note)
                 btnRecord.setImageDrawable(
                     ResourcesCompat.getDrawable(
                         resources,
@@ -151,6 +151,7 @@ class EditNoteFragment : Fragment(), View.OnClickListener, TimePickerDialog.OnTi
 
     private fun setup() {
         binding.apply {
+            tvToolbarText.text = resources.getString(R.string.edit_note)
             btnRecord.setImageDrawable(
                 ResourcesCompat.getDrawable(
                     resources,

@@ -34,7 +34,7 @@
     <string name="view_pager_description_notification">Imposta un promemoria per le tue note e ricevi una notifica all\'ora esatta per cui hai impostato il promemoria. Non devi più preoccuparti di dimenticare di controllare una nota.</string>
     <string name="view_pager_title_dark_mode">Progettato per te</string>
     <string name="view_pager_description_dark_mode">Prendere appunti non dovrebbe essere fantascienza. L\'app è stata progettata pensando a te per facilitare il modo in cui prendi appunti e anche per migliorare la tua produttività</string>
-    <string name="record_player">Registratore</string>
+    <string name="play_note">Registratore</string>
     <string name="developer">Sviluppatore</string>
     <string name="contribute">Contribuisci</string>
     <string name="contribute_summary">Visualizza il progetto su GitHub</string>

@@ -38,7 +38,7 @@
     <string name="view_pager_description_notification">Set a reminder for your notes and get notified at the exact time you set the reminder for.  You no longer have to worry about forgetting to check out a note.</string>
     <string name="view_pager_title_dark_mode">Designed for you</string>
     <string name="view_pager_description_dark_mode">Taking notes shouldn\'t be rocket science. The application was designed with you in mind to ease how you take notes and to also improve your productivity</string>
-    <string name="record_player">Record Player</string>
+    <string name="play_note">Play Note</string>
     <string name="developer">Developer</string>
     <string name="developer_nick" translatable="false">Sammie_kt</string>
     <string name="contribute">Contribute</string>
@@ -87,4 +87,6 @@
     <!-- Alert Dialog Button-->
     <string name="alert_btn_cancel">Cancel</string>
     <string name="alert_btn_fetch">Fetch</string>
+    <string name="record_your_note">Record your note :</string>
+    <string name="create_note">Create Note</string>
 </resources>

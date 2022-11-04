@@ -52,8 +52,21 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_baseline_arrow_back_24"
-            app:tint="@color/black_day_white_night"
+            app:tint="@color/black"
             tools:ignore="TouchTargetSizeCheck" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_toolbar_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/open_sans_medium"
+            android:text="@string/create_note"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_18sdp"
+            app:layout_constraintTop_toTopOf="@id/btn_back"
+            app:layout_constraintBottom_toBottomOf="@id/btn_back"
+            app:layout_constraintStart_toEndOf="@id/btn_back"
+            app:timerVisible="@{note.audioLength}" />
 
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/btn_delete"
@@ -67,7 +80,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_baseline_delete_outline_24"
-            app:tint="@color/black_day_white_night"
             app:visible="@{uiState == UIState.HAS_DATA}"
             tools:ignore="TouchTargetSizeCheck" />
 
@@ -110,6 +122,7 @@
                         android:layout_height="wrap_content"
                         android:inputType="textCapSentences"
                         android:maxLength="50"
+                        android:textColor="@color/black"
                         android:text="@{note.title}"
                         android:textSize="@dimen/_12ssp" />
 
@@ -123,7 +136,7 @@
                     android:layout_marginTop="@dimen/_8sdp"
                     android:hint="@string/note_hint_description"
                     app:counterEnabled="true"
-                    app:counterMaxLength="500"
+                    app:counterMaxLength="250"
                     app:endIconMode="clear_text"
                     app:layout_constraintEnd_toEndOf="@+id/til_note_title"
                     app:layout_constraintStart_toStartOf="@+id/til_note_title"
@@ -135,6 +148,7 @@
                         android:layout_height="wrap_content"
                         android:inputType="textCapSentences|textMultiLine"
                         android:maxLength="500"
+                        android:textColor="@color/black"
                         android:text="@{note.description}"
                         android:textSize="@dimen/_12ssp" />
 
@@ -147,8 +161,8 @@
                     android:layout_marginTop="@dimen/_8sdp"
                     android:layout_marginBottom="@dimen/_8sdp"
                     android:fontFamily="@font/open_sans_regular"
-                    android:text="Record your note"
-                    android:textColor="@color/black_day_white_night"
+                    android:text="@string/record_your_note"
+                    android:textColor="@color/black"
                     android:textSize="@dimen/_14sdp"
                     app:layout_constraintBottom_toTopOf="@id/btn_record"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -178,7 +192,7 @@
                     android:layout_marginBottom="@dimen/_8sdp"
                     android:fontFamily="@font/open_sans_regular"
                     android:gravity="center"
-                    android:textColor="@color/black_day_white_night"
+                    android:textColor="@color/black"
                     android:textSize="@dimen/_20ssp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
