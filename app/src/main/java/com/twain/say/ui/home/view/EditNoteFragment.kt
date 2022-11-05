@@ -113,7 +113,7 @@ class EditNoteFragment : Fragment(), View.OnClickListener, TimePickerDialog.OnTi
             }
             btnDelete.setOnClickListener { launchDeleteNoteDialog() }
             btnRecord.setOnClickListener(this@EditNoteFragment)
-            fabSaveNote.setOnClickListener(this@EditNoteFragment)
+            btnSave.setOnClickListener(this@EditNoteFragment)
             etNoteTitle.addTextChangedListener(object : TextWatcher {
                 override fun afterTextChanged(s: Editable?) {
                     if (s?.isNotEmpty() == true)
@@ -234,7 +234,7 @@ class EditNoteFragment : Fragment(), View.OnClickListener, TimePickerDialog.OnTi
                 btnRecord -> {
                     audioRecorder.manageExistingAudioRecording()
                 }
-                fabSaveNote -> {
+                btnSave -> {
                     val note = _note.copy(
                         title = etNoteTitle.text.toString().trim(),
                         description = etNoteDescription.text.toString().trim()
@@ -245,6 +245,8 @@ class EditNoteFragment : Fragment(), View.OnClickListener, TimePickerDialog.OnTi
                         viewModel.updateNote(note)
                         if (pickedDateTime?.timeInMillis != null && pickedDateTime?.timeInMillis != currentDateTime.timeInMillis)
                             startAlarm(requireContext(), pickedDateTime!!.timeInMillis, note)
+
+                        audioRecorder.stopPlayingRecording()
                         navController.navigate(R.id.action_editNoteFragment_to_homeFragment)
                     } else {
                         etNoteTitle.requestFocus()
@@ -297,7 +299,7 @@ class EditNoteFragment : Fragment(), View.OnClickListener, TimePickerDialog.OnTi
                             }
                     }
                 }
-                fabSaveNote -> {
+                btnSave -> {
                     if (etNoteTitle.text.toString().isNotBlank()) {
                         if (_note.audioLength <= 0) {
                             context.getString(R.string.record_note_before_saving)

@@ -136,12 +136,14 @@ class HomeFragment : Fragment(){
                 audioRecorder?.manageExistingAudioRecording()
             }
             ivClose.setOnClickListener { bottomSheetDialog.dismiss() }
+            tvNoteTitle.isSelected = true
         }
         bottomSheetDialog.dismissWithAnimation = true
         bottomSheetDialog.edgeToEdgeEnabled
         bottomSheetDialog.setContentView(bindingView.root)
         bottomSheetDialog.setCanceledOnTouchOutside(false)
         bottomSheetDialog.setOnDismissListener {
+            audioRecorder?.stopPlayingRecording()
             audioRecorder?.cleanupResource()
             audioRecorder = null
         }

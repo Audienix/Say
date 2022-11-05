@@ -59,13 +59,15 @@
             android:id="@+id/tv_toolbar_text"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_8sdp"
             android:fontFamily="@font/open_sans_medium"
             android:text="@string/create_note"
             android:textColor="@color/black"
             android:textSize="@dimen/_18sdp"
-            app:layout_constraintTop_toTopOf="@id/btn_back"
             app:layout_constraintBottom_toBottomOf="@id/btn_back"
+            app:layout_constraintEnd_toStartOf="@id/btn_delete"
             app:layout_constraintStart_toEndOf="@id/btn_back"
+            app:layout_constraintTop_toTopOf="@id/btn_back"
             app:timerVisible="@{note.audioLength}" />
 
         <androidx.appcompat.widget.AppCompatImageButton
@@ -77,10 +79,24 @@
             android:background="@null"
             android:padding="@dimen/_4sdp"
             app:contentDescription="@string/delete_button"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/btn_save"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_baseline_delete_outline_24"
             app:visible="@{uiState == UIState.HAS_DATA}"
+            tools:ignore="TouchTargetSizeCheck" />
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/btn_save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_16sdp"
+            android:layout_marginEnd="@dimen/_8sdp"
+            android:background="@null"
+            android:padding="@dimen/_4sdp"
+            app:contentDescription="@string/delete_button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_baseline_done_24"
             tools:ignore="TouchTargetSizeCheck" />
 
         <ScrollView
@@ -122,8 +138,8 @@
                         android:layout_height="wrap_content"
                         android:inputType="textCapSentences"
                         android:maxLength="50"
-                        android:textColor="@color/black"
                         android:text="@{note.title}"
+                        android:textColor="@color/black"
                         android:textSize="@dimen/_12ssp" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -148,8 +164,8 @@
                         android:layout_height="wrap_content"
                         android:inputType="textCapSentences|textMultiLine"
                         android:maxLength="500"
-                        android:textColor="@color/black"
                         android:text="@{note.description}"
+                        android:textColor="@color/black"
                         android:textSize="@dimen/_12ssp" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -204,23 +220,6 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>
-
-        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-            android:id="@+id/fab_save_note"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/_16sdp"
-            android:layout_marginBottom="@dimen/_16sdp"
-            android:text="@string/save"
-            android:textSize="@dimen/_14ssp"
-            app:backgroundTint="@color/cardview_light_background"
-            app:icon="@drawable/ic_baseline_done_24"
-            app:iconGravity="textStart"
-            app:iconPadding="@dimen/_2ssp"
-            app:iconSize="@dimen/_27sdp"
-            app:layout_constraintBottom_toTopOf="@id/card_add_reminder"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:textAllCaps="false" />
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/card_add_reminder"

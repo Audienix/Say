@@ -106,13 +106,13 @@ class AudioRecorder(
             try {
                 prepare()
                 start()
-                sayStopwatch!!.start()
-                isRecording = true
             } catch (e: IOException) {
                 context.getString(R.string.error_occurred)
                     .showToast(context, Toast.LENGTH_SHORT)
             }
         }
+        sayStopwatch!!.start()
+        isRecording = true
     }
 
     fun stopRecording() {
@@ -124,8 +124,10 @@ class AudioRecorder(
             }
         }
         sayStopwatch?.apply {
-            stop()
-            note.audioLength = sayStopwatch!!.elapsedTime / 1000
+            if(isStarted) {
+                stop()
+                note.audioLength = sayStopwatch!!.elapsedTime / 1000
+            }
         }
         if (note.audioLength <= 0)
             return
@@ -174,15 +176,19 @@ class AudioRecorder(
         if (sayTimer!!.isPaused) sayTimer!!.resume()
     }
 
-    private fun stopPlayingRecording() {
+    fun stopPlayingRecording() {
         mediaPlayer.apply {
-            stop()
-            release()
+            if(isPlayingRecord) {
+                stop()
+                release()
+            }
         }
-        if (sayTimer!!.isStarted) sayTimer!!.stop()
-        sayTimer = null
-        context.getString(R.string.stopped_playing_recording)
-            .showToast(context, Toast.LENGTH_SHORT)
+        if(sayTimer != null) {
+            if (sayTimer!!.isStarted) sayTimer!!.stop()
+            sayTimer = null
+            context.getString(R.string.stopped_playing_recording)
+                .showToast(context, Toast.LENGTH_SHORT)
+        }
     }
 
     private fun finishStopWatch() {
