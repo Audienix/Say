@@ -10,6 +10,7 @@
     <color name="teal_700">#FF00796B</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="translucent_white">#FBFBFB</color>
 
     <color name="black_day_white_night">@color/black</color>
     <color name="fragment_background">@color/teal_100</color>

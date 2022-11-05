@@ -3,8 +3,11 @@ package com.twain.say.ui.home.view
 import android.Manifest
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
-import android.content.Context
 import android.os.Bundle
+import android.text.Editable
+import android.text.InputFilter
+import android.text.InputFilter.LengthFilter
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,16 +22,19 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.twain.say.MainActivity
 import com.twain.say.R
+import com.twain.say.constants.IntegerConstants
+import com.twain.say.data.model.AlertDialogDetails
 import com.twain.say.databinding.DialogEditReminderBinding
 import com.twain.say.databinding.FragmentEditNoteBinding
 import com.twain.say.helper.AudioRecorder
+import com.twain.say.ui.common.AlertDialogFragment
 import com.twain.say.ui.home.model.Note
 import com.twain.say.ui.home.viewmodel.HomeViewModel
 import com.twain.say.utils.*
 import com.twain.say.utils.Extensions.showToast
+import com.twain.say.utils.Extensions.statusBarColorFromNoteColor
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -45,7 +51,7 @@ class EditNoteFragment : Fragment(), View.OnClickListener, TimePickerDialog.OnTi
 
     private val viewModel: HomeViewModel by viewModels()
     private val args: EditNoteFragmentArgs by navArgs()
-    private var file: File? = null
+    private var recordingFile: File? = null
     private var isRecording = false
 
     private lateinit var _note: Note
@@ -75,7 +81,11 @@ class EditNoteFragment : Fragment(), View.OnClickListener, TimePickerDialog.OnTi
             binding.tvTimer,
             _note
         )
+        bindingNonView()
+        bindingView()
+    }
 
+    private fun bindingNonView() {
         binding.lifecycleOwner = this
         binding.apply {
             note = _note
@@ -83,8 +93,15 @@ class EditNoteFragment : Fragment(), View.OnClickListener, TimePickerDialog.OnTi
             reminderAvailableState = viewModel.reminderAvailableState
             reminderCompletionState = viewModel.reminderCompletionState
         }
+    }
 
+    private fun bindingView() {
         binding.apply {
+            etNoteTitle.filters =
+                arrayOf<InputFilter>(LengthFilter(IntegerConstants.MAX_CHAR_COUNT_NOTE_TITLE))
+            etNoteDescription.filters =
+                arrayOf<InputFilter>(LengthFilter(IntegerConstants.MAX_CHAR_COUNT_NOTE_DESCRIPTION))
+
             btnBack.setOnClickListener {
                 navController.navigate(R.id.action_editNoteFragment_to_homeFragment)
             }
@@ -94,11 +111,30 @@ class EditNoteFragment : Fragment(), View.OnClickListener, TimePickerDialog.OnTi
                 else
                     openEditReminderDialog()
             }
-            btnDelete.setOnClickListener { launchDeleteNoteDialog(requireContext()) }
+            btnDelete.setOnClickListener { launchDeleteNoteDialog() }
             btnRecord.setOnClickListener(this@EditNoteFragment)
             fabSaveNote.setOnClickListener(this@EditNoteFragment)
+            etNoteTitle.addTextChangedListener(object : TextWatcher {
+                override fun afterTextChanged(s: Editable?) {
+                    if (s?.isNotEmpty() == true)
+                        tilNoteTitle.error = null
+                    else
+                        tilNoteTitle.error = requireContext().getString(R.string.title_required)
+                }
 
+                override fun beforeTextChanged(
+                    s: CharSequence?,
+                    start: Int,
+                    count: Int,
+                    after: Int
+                ) {
+                }
+
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                }
+            })
             if (args.note.id == 0) {
+                binding.tvToolbarText.text = resources.getString(R.string.create_note)
                 btnRecord.setImageDrawable(
                     ResourcesCompat.getDrawable(
                         resources,
@@ -106,7 +142,7 @@ class EditNoteFragment : Fragment(), View.OnClickListener, TimePickerDialog.OnTi
                     )
                 )
                 viewModel.uiState.set(UIState.EMPTY)
-                file = null
+                recordingFile = null
             } else {
                 setup()
             }
@@ -115,6 +151,7 @@ class EditNoteFragment : Fragment(), View.OnClickListener, TimePickerDialog.OnTi
 
     private fun setup() {
         binding.apply {
+            tvToolbarText.text = resources.getString(R.string.edit_note)
             btnRecord.setImageDrawable(
                 ResourcesCompat.getDrawable(
                     resources,
@@ -122,7 +159,7 @@ class EditNoteFragment : Fragment(), View.OnClickListener, TimePickerDialog.OnTi
                 )
             )
             lifecycleScope.launch(Dispatchers.IO) {
-                file = File(_note.filePath)
+                recordingFile = File(_note.filePath)
             }
             viewModel.apply {
                 uiState.set(UIState.HAS_DATA)
@@ -144,12 +181,7 @@ class EditNoteFragment : Fragment(), View.OnClickListener, TimePickerDialog.OnTi
 
     override fun onResume() {
         super.onResume()
-//        if (args.note.id == 0)
-//            binding.etNoteTitle.apply {
-//                requestFocus()
-//                showKeyboardFor(requireContext())
-//            }
-        updateStatusBarColor(requireActivity(), binding.note!!.color)
+        statusBarColorFromNoteColor(binding.note!!.color)
     }
 
     override fun onDestroyView() {
@@ -200,7 +232,7 @@ class EditNoteFragment : Fragment(), View.OnClickListener, TimePickerDialog.OnTi
         binding.apply {
             when (p0) {
                 btnRecord -> {
-                   audioRecorder.manageExistingAudioRecording()
+                    audioRecorder.manageExistingAudioRecording()
                 }
                 fabSaveNote -> {
                     val note = _note.copy(
@@ -215,9 +247,8 @@ class EditNoteFragment : Fragment(), View.OnClickListener, TimePickerDialog.OnTi
                             startAlarm(requireContext(), pickedDateTime!!.timeInMillis, note)
                         navController.navigate(R.id.action_editNoteFragment_to_homeFragment)
                     } else {
-                        requireContext().getString(R.string.title_required)
-                            .showToast(requireContext(), Toast.LENGTH_SHORT)
                         etNoteTitle.requestFocus()
+                        tilNoteTitle.error = requireContext().getString(R.string.title_required)
                     }
                 }
             }
@@ -268,12 +299,12 @@ class EditNoteFragment : Fragment(), View.OnClickListener, TimePickerDialog.OnTi
                 }
                 fabSaveNote -> {
                     if (etNoteTitle.text.toString().isNotBlank()) {
-                        audioRecorder.stopRecording()
                         if (_note.audioLength <= 0) {
                             context.getString(R.string.record_note_before_saving)
                                 .showToast(context, Toast.LENGTH_SHORT)
                             return
                         }
+                        audioRecorder.stopRecording()
                         val note = _note.copy(
                             title = etNoteTitle.text.toString().trim(),
                             description = etNoteDescription.text.toString().trim()
@@ -285,9 +316,8 @@ class EditNoteFragment : Fragment(), View.OnClickListener, TimePickerDialog.OnTi
                             startAlarm(context, pickedDateTime!!.timeInMillis, note)
                         navController.navigate(R.id.action_editNoteFragment_to_homeFragment)
                     } else {
-                        context.getString(R.string.title_required)
-                            .showToast(requireContext(), Toast.LENGTH_SHORT)
                         etNoteTitle.requestFocus()
+                        tilNoteTitle.error = requireContext().getString(R.string.title_required)
                     }
                 }
             }
@@ -326,23 +356,29 @@ class EditNoteFragment : Fragment(), View.OnClickListener, TimePickerDialog.OnTi
                 pickDate()
             }
         }
+        bottomSheetDialog.dismissWithAnimation = true
         bottomSheetDialog.edgeToEdgeEnabled
         bottomSheetDialog.setContentView(view.root)
         bottomSheetDialog.show()
     }
 
-    private fun launchDeleteNoteDialog(context: Context) {
-        val materialDialog = MaterialAlertDialogBuilder(context)
-        materialDialog.apply {
-            setTitle(context.getString(R.string.delete_note))
-            setMessage("${context.getString(R.string.confirm_deletion)} '${_note.title}?'")
-            setNegativeButton(context.getString(R.string.no)) { dialog, _ -> dialog?.dismiss() }
-            setPositiveButton(context.getString(R.string.yes)) { _, _ ->
+    private fun launchDeleteNoteDialog() {
+        val alertDlg = AlertDialogDetails(
+            R.drawable.ic_alert_warning,
+            resources.getString(R.string.delete_note),
+            "${requireContext().getString(R.string.confirm_deletion)} '${_note.title}?'",
+            resources.getString(R.string.yes),
+            resources.getString(R.string.no),
+            true
+        )
+        AlertDialogFragment(requireContext()).show(alertDlg) { dialog, response ->
+            if (response == AlertDialogFragment.ResponseType.YES) {
                 viewModel.deleteNote(_note)
-                lifecycleScope.launch(Dispatchers.IO) { file?.delete() }
+                lifecycleScope.launch(Dispatchers.IO) { recordingFile?.delete() }
                 navController.navigate(R.id.action_editNoteFragment_to_homeFragment)
+            } else if (response == AlertDialogFragment.ResponseType.NO) {
+                dialog.dismiss()
             }
-            show()
         }
     }
 }

@@ -17,8 +17,8 @@
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="@dimen/_8sdp"
-        app:cardElevation="@dimen/_4sdp"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="@dimen/cardview_default_elevation"
         app:cardUseCompatPadding="true">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -32,13 +32,10 @@
                 android:background="@{note.color}"
                 android:orientation="vertical"
                 android:padding="@dimen/_8sdp"
-                android:backgroundTint="#D8FFFFFF"
-                android:backgroundTintMode="screen"
-                app:layout_constraintBottom_toBottomOf="@id/guideline1"
+                app:layout_constraintBottom_toTopOf="@id/guideline1"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:background="@color/teal_500" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/btn_play"
@@ -46,7 +43,7 @@
                 android:layout_height="@dimen/_32sdp"
                 android:layout_marginTop="@dimen/_8sdp"
                 android:background="@drawable/ic_circle"
-                android:backgroundTint="@{note.color}"
+                android:backgroundTint="#BF000000"
                 android:contentDescription="@string/record_button"
                 android:elevation="@dimen/_8sdp"
                 android:padding="@dimen/_4sdp"
@@ -66,7 +63,6 @@
                 android:gravity="center"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_10ssp"
-                app:layout_constraintBottom_toBottomOf="@id/guideline1"
                 app:layout_constraintEnd_toEndOf="@id/guideline2"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/btn_play"
@@ -113,8 +109,8 @@
                 android:layout_marginEnd="@dimen/_8sdp"
                 android:ellipsize="end"
                 android:fontFamily="@font/open_sans_regular"
-                android:maxLines="1"
-                android:text="@{note.description}"
+                android:maxLines="2"
+                android:text="@{AppUtilKt.formatNoteDescription(note.description, context)}"
                 android:textAppearance="@style/TextAppearance.Material3.LabelMedium"
                 android:textColor="@color/black"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -128,6 +124,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_8sdp"
                 android:layout_marginTop="@dimen/_4sdp"
+                android:layout_marginBottom="@dimen/_4sdp"
                 android:layout_marginEnd="@dimen/_8sdp"
                 android:fontFamily="@font/open_sans_italic"
                 android:maxLines="1"
@@ -137,6 +134,7 @@
                 android:textSize="@dimen/_10ssp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_note_description"
+                app:layout_constraintBottom_toTopOf="@id/guideline1"
                 tools:text="17/11/21" />
 
             <androidx.appcompat.widget.AppCompatImageView

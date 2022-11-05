@@ -18,17 +18,26 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 
 val colors = listOf(
-    -504764, -740056, -1544140, -2277816, -3246217, -4024195,
-    -4224594, -7305542, -7551917, -7583749, -10712898, -10896368, -10965321,
-    -11419154, -14654801
+    "#FFCDD2", //Red 100
+    "#F8BBD0", // Pink 100
+    "#E1BEE7", // Purple 100
+    "#D1C4E9", // Deep Purple 100
+    "#C5CAE9", // Indigo 100
+    "#BBDEFB", // Blue 100
+    "#B3E5FC", // Light Blue 100
+    "#B2EBF2", // Cyan 100
+    "#B2DFDB", // Teal 100
+    "#C8E6C9", // Green 100
+    "#DCEDC8", // Light Green 100
+    "#F0F4C3", // Lime 100
+    "#FFF9C4", // Yellow 100
+    "#FFECB3", // Amber 100
+    "#FFE0B2", // Orange 100
+    "#FFCCBC", // Deep Orange 100
+    "#D7CCC8", // Brown 100
+    "#F5F5F5", // Gray 100
+    "#CFD8DC"  // Blue Gray 100
 )
-
-fun updateStatusBarColor(context: Activity, color: Int) {
-    val window = context.window
-    window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-//        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-    window.statusBarColor = color
-}
 
 fun filePath(activity: Activity) = activity.getExternalFilesDir("/")?.absolutePath
 
@@ -41,8 +50,11 @@ fun requestPermission(activity: Activity, message: String, requestCode: Int, per
 
 fun currentDate(): Calendar = Calendar.getInstance()
 
-fun formatDate(date: Long, context: Context): String {
+fun formatNoteDescription(description: String, context: Context): String {
+    return if (description.isEmpty()) context.resources.getString(R.string.no_description) else description
+}
 
+fun formatDate(date: Long, context: Context): String {
     val now = Date()
     val seconds = TimeUnit.MILLISECONDS.toSeconds(now.time - date)
     val minutes = TimeUnit.MILLISECONDS.toMinutes(now.time - date)

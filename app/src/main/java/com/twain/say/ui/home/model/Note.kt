@@ -1,5 +1,6 @@
 package com.twain.say.ui.home.model
 
+import android.graphics.Color
 import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -14,7 +15,7 @@ data class Note(
     var id: Int = 0,
     var title: String = String(),
     var description: String = String(),
-    var color: Int = colors.random(),
+    var color: Int = Color.parseColor(colors.random()),
     var lastModificationDate: Long = currentDate().timeInMillis,
     var size: String = String(),
     var audioLength: Long = -1L,
