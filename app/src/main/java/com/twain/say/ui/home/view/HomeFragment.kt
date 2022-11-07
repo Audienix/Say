@@ -65,7 +65,7 @@ class HomeFragment : Fragment(){
         binding.uiState = viewModel.uiState
 
         binding.apply {
-//            btnSettings.setOnClickListener { navController.navigate(R.id.action_homeFragment_to_settingsFragment) }
+            toolbar.btnSettings.setOnClickListener { navController.navigate(R.id.action_homeFragment_to_settingsFragment) }
             fabAddNote.setOnClickListener {
                 val action =
                     HomeFragmentDirections.actionHomeFragmentToEditNoteFragment(Note())
@@ -104,7 +104,7 @@ class HomeFragment : Fragment(){
 
     private fun setUpRecyclerView(recyclerViewNotes: RecyclerView) {
         adapter =
-            NoteListAdapter(requireActivity()) { view: View, note: Note, playAudioNote: Boolean ->
+            NoteListAdapter(requireActivity(), viewModel) { view: View, note: Note, playAudioNote: Boolean ->
                 if (playAudioNote)
                     showAudioPlayerBottomSheet(note)
                 else

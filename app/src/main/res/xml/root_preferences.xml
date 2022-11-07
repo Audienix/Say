@@ -1,0 +1,47 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory app:title="@string/display">
+
+        <ListPreference
+            app:defaultValue="@string/default_theme"
+            app:dialogTitle="@string/choose_theme"
+            app:entries="@array/pref_theme"
+            app:entryValues="@array/pref_theme_values"
+            app:icon="@drawable/ic_brightness_medium_black_24dp"
+            app:key="@string/key_theme"
+            app:title="@string/theme"
+            app:useSimpleSummaryProvider="true" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/about">
+        <Preference
+            android:icon="@drawable/ic_person_black_24"
+            app:summary="Arighna and Rupsha"
+            app:title="@string/team">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="https://github.com/certified84" />
+        </Preference>
+
+        <Preference
+            android:icon="@drawable/ic_contact_support_black_24dp"
+            app:summary="@string/developer_mail"
+            app:title="@string/contact_feedback">
+            <intent
+                android:action="android.intent.action.SENDTO"
+                android:data="mailto:Sammie_kt@pm.me?subject=Feedback" />
+        </Preference>
+
+<!--        <Preference-->
+<!--            android:icon="@drawable/ic_info_black_24dp"-->
+<!--            app:summary="@string/app_version_licence_and_more"-->
+<!--            app:title="@string/about">-->
+<!--            <intent-->
+<!--                android:action="android.intent.action.VIEW"-->
+<!--                android:data="https://github.com/certified84/AudioNote" />-->
+<!--        </Preference>-->
+    </PreferenceCategory>
+
+</PreferenceScreen>

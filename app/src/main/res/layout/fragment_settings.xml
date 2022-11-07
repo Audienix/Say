@@ -1,33 +1,110 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.onboarding.view.OnboardingFragment">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="16dp">
+        android:layout_height="match_parent">
 
-        <Button
-            android:id="@+id/button_second"
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/btn_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toTopOf="@id/textview_second"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_gravity="center"
+            android:background="@null"
+            android:padding="@dimen/_4sdp"
+            android:tint="@color/black_day_white_night"
+            android:layout_marginStart="@dimen/_8sdp"
+            app:layout_constraintBottom_toBottomOf="@+id/materialTextView"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/materialTextView"
+            app:srcCompat="@drawable/ic_baseline_arrow_back_24" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/materialTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_8sdp"
+            android:layout_marginTop="@dimen/_16sdp"
+            android:fontFamily="@font/open_sans_bold"
+            android:text="@string/settings"
+            android:textColor="@color/black_day_white_night"
+            android:textSize="@dimen/_22ssp"
+            app:layout_constraintStart_toEndOf="@+id/btn_back"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/textview_second"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+        <ScrollView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="@dimen/_16sdp"
+            android:layout_marginTop="@dimen/_16sdp"
+            android:layout_marginEnd="@dimen/_16sdp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/button_second" />
+            app:layout_constraintTop_toBottomOf="@+id/btn_back">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.fragment.app.FragmentContainerView
+                    android:id="@+id/preference_fragment"
+                    android:name="com.twain.say.ui.settings.PreferenceFragment"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/appCompatImageView4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_12sdp"
+                    android:src="@drawable/ic_info_black_24dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/materialTextView9"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/materialTextView8" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/materialTextView8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_20sdp"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:text="@string/about"
+                    android:fontFamily="@font/open_sans_semi_bold"
+                    android:textSize="@dimen/_14ssp"
+                    android:textColor="@color/black_day_white_night"
+                    app:layout_constraintStart_toEndOf="@+id/appCompatImageView4"
+                    app:layout_constraintTop_toBottomOf="@+id/preference_fragment" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/materialTextView9"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/_4sdp"
+                    android:textSize="@dimen/_11ssp"
+                    android:fontFamily="@font/open_sans_regular"
+                    android:text="@string/app_version_licence_and_more"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/materialTextView8"
+                    app:layout_constraintTop_toBottomOf="@+id/materialTextView8" />
+
+                <androidx.constraintlayout.widget.Group
+                    android:id="@+id/group_about"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    app:constraint_referenced_ids="materialTextView9,materialTextView8"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/materialTextView8" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </ScrollView>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.core.widget.NestedScrollView>
+</layout>

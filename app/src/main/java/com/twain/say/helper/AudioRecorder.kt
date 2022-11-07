@@ -39,7 +39,7 @@ class AudioRecorder(
     private var isPlayingRecord = false
     private var isRecording = false
     private var sayStopwatch: SayStopwatch? = null
-    private lateinit var mediaPlayer: MediaPlayer
+    private val mediaPlayer by lazy { MediaPlayer() }
     private lateinit var mediaRecorder: MediaRecorder
 
     init {
@@ -68,11 +68,6 @@ class AudioRecorder(
     }
 
     override fun onTimerCompletion(timer: SayTimer?) {
-//        btnRecord.setBackgroundResource(R.drawable.ic_circle)
-//        ViewCompat.setBackgroundTintList(
-//            btnRecord,
-//            ColorStateList.valueOf(note.color)
-//        )
         btnRecord.setImageDrawable(
             ResourcesCompat.getDrawable(
                 context.resources,
@@ -144,7 +139,6 @@ class AudioRecorder(
         sayTimer = SayTimer(recordingDuration)
         sayTimer!!.setTextView(tvTimer)
         sayTimer!!.setOnTickListener(this)
-        mediaPlayer = MediaPlayer()
         try {
             mediaPlayer.apply {
                 val file = File(note.filePath)
@@ -242,11 +236,6 @@ class AudioRecorder(
                         resumePlayingRecording()
                 }
         } else {
-//            btnRecord.setBackgroundResource(R.drawable.ic_circle)
-//            ViewCompat.setBackgroundTintList(
-//                btnRecord,
-//                ColorStateList.valueOf(note.color)
-//            )
             btnRecord.setImageDrawable(
                 ResourcesCompat.getDrawable(
                     context.resources,

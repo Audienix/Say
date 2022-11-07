@@ -48,6 +48,14 @@
             app:popExitAnim="@anim/slide_out"
             app:popUpTo="@id/homeFragment"
             app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_homeFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment"
+            app:enterAnim="@anim/slide_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/slide_out"
+            app:popUpTo="@id/homeFragment" />
     </fragment>
     <fragment
         android:id="@+id/editNoteFragment"
@@ -64,5 +72,39 @@
         <argument
             android:name="note"
             app:argType="com.twain.say.ui.home.model.Note" />
+    </fragment>
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.twain.say.ui.settings.SettingsFragment"
+        android:label="SettingsFragment"
+        tools:layout="@layout/fragment_settings">
+        <action
+            android:id="@+id/action_settingsFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/slide_out"
+            app:popUpTo="@id/homeFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_settingsFragment_to_aboutFragment"
+            app:destination="@id/aboutFragment"
+            app:enterAnim="@anim/slide_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/slide_out"
+            app:popUpTo="@id/settingsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/aboutFragment"
+        android:name="com.twain.say.ui.settings.AboutFragment"
+        android:label="fragment_about"
+        tools:layout="@layout/fragment_about">
+        <action
+            android:id="@+id/action_aboutFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/slide_out"
+            app:popUpTo="@id/settingsFragment"
+            app:popUpToInclusive="true" />
     </fragment>
 </navigation>

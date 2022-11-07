@@ -39,11 +39,10 @@
     <string name="view_pager_title_dark_mode">Designed for you</string>
     <string name="view_pager_description_dark_mode">Taking notes shouldn\'t be rocket science. The application was designed with you in mind to ease how you take notes and to also improve your productivity</string>
     <string name="play_note">Play Note</string>
-    <string name="developer">Developer</string>
-    <string name="developer_nick" translatable="false">Sammie_kt</string>
+    <string name="team">Team</string>
     <string name="contribute">Contribute</string>
     <string name="contribute_summary">View project on Github</string>
-    <string name="developer_mail" translatable="false">Sammie_kt@pm.me</string>
+    <string name="developer_mail" translatable="false">arighna88@gmail.com</string>
     <string name="contact_feedback"><![CDATA[Contact & Feedback]]></string>
     <string name="get_started">Get Started</string>
     <string name="just_now">Just now</string>
@@ -89,4 +88,7 @@
     <string name="alert_btn_fetch">Fetch</string>
     <string name="record_your_note">Record your note :</string>
     <string name="create_note">Create Note</string>
+
+    <string name="version">Version: </string>
+
 </resources>

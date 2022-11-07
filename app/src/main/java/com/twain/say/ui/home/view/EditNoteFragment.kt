@@ -1,8 +1,6 @@
 package com.twain.say.ui.home.view
 
 import android.Manifest
-import android.app.DatePickerDialog
-import android.app.TimePickerDialog
 import android.os.Bundle
 import android.text.Editable
 import android.text.InputFilter
@@ -11,8 +9,6 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.DatePicker
-import android.widget.TimePicker
 import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
@@ -29,6 +25,7 @@ import com.twain.say.data.model.AlertDialogDetails
 import com.twain.say.databinding.DialogEditReminderBinding
 import com.twain.say.databinding.FragmentEditNoteBinding
 import com.twain.say.helper.AudioRecorder
+import com.twain.say.helper.DateTimePicker
 import com.twain.say.ui.common.AlertDialogFragment
 import com.twain.say.ui.home.model.Note
 import com.twain.say.ui.home.viewmodel.HomeViewModel
@@ -43,8 +40,7 @@ import java.util.*
 
 
 @AndroidEntryPoint
-class EditNoteFragment : Fragment(), View.OnClickListener, TimePickerDialog.OnTimeSetListener,
-    DatePickerDialog.OnDateSetListener {
+class EditNoteFragment : Fragment(), View.OnClickListener {
 
     private var _binding: FragmentEditNoteBinding? = null
     private val binding get() = _binding!!
@@ -57,9 +53,10 @@ class EditNoteFragment : Fragment(), View.OnClickListener, TimePickerDialog.OnTi
     private lateinit var _note: Note
     private lateinit var audioRecorder: AudioRecorder
     private lateinit var navController: NavController
+    private lateinit var dateTimePicker: DateTimePicker
 
-    private var pickedDateTime: Calendar? = null
     private val currentDateTime by lazy { currentDate() }
+    private var pickedDateTime: Calendar = currentDateTime
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -106,8 +103,15 @@ class EditNoteFragment : Fragment(), View.OnClickListener, TimePickerDialog.OnTi
                 navController.navigate(R.id.action_editNoteFragment_to_homeFragment)
             }
             cardAddReminder.setOnClickListener {
+                dateTimePicker = DateTimePicker(requireContext()) { selectedDateTime ->
+                    pickedDateTime = selectedDateTime
+                    _note.reminder = selectedDateTime.timeInMillis
+                    viewModel.reminderAvailableState.set(ReminderAvailableState.HAS_REMINDER)
+                    binding.tvReminderDate.text = formatReminderDate(selectedDateTime.timeInMillis)
+                }
+
                 if (viewModel.reminderAvailableState.get() == ReminderAvailableState.NO_REMINDER)
-                    pickDate()
+                    dateTimePicker.pickDate()
                 else
                     openEditReminderDialog()
             }
@@ -200,34 +204,6 @@ class EditNoteFragment : Fragment(), View.OnClickListener, TimePickerDialog.OnTi
         }
     }
 
-    override fun onTimeSet(p0: TimePicker?, p1: Int, p2: Int) {
-        pickedDateTime!!.set(Calendar.HOUR_OF_DAY, p1)
-        pickedDateTime!!.set(Calendar.MINUTE, p2)
-        if (pickedDateTime!!.timeInMillis <= currentDate().timeInMillis) {
-            pickedDateTime!!.run {
-                set(Calendar.DAY_OF_MONTH, currentDateTime.get(Calendar.DAY_OF_MONTH) + 1)
-                set(Calendar.YEAR, currentDateTime.get(Calendar.YEAR))
-                set(Calendar.MONTH, currentDateTime.get(Calendar.MONTH))
-            }
-        }
-    }
-
-    override fun onDateSet(p0: DatePicker?, p1: Int, p2: Int, p3: Int) {
-        pickedDateTime = currentDate()
-        pickedDateTime!!.set(p1, p2, p3)
-        val hourOfDay = currentDateTime.get(Calendar.HOUR_OF_DAY)
-        val minuteOfDay = currentDateTime.get(Calendar.MINUTE)
-        val timePickerDialog =
-            TimePickerDialog(requireContext(), this, hourOfDay, minuteOfDay, false)
-
-        timePickerDialog.setOnDismissListener {
-            _note.reminder = pickedDateTime!!.timeInMillis
-            viewModel.reminderAvailableState.set(ReminderAvailableState.HAS_REMINDER)
-            binding.tvReminderDate.text = formatReminderDate(pickedDateTime!!.timeInMillis)
-        }
-        timePickerDialog.show()
-    }
-
     private fun onClickWhenIdIsNotZero(p0: View?) {
         binding.apply {
             when (p0) {
@@ -243,8 +219,8 @@ class EditNoteFragment : Fragment(), View.OnClickListener, TimePickerDialog.OnTi
                     )
                     if (note.title.isNotBlank()) {
                         viewModel.updateNote(note)
-                        if (pickedDateTime?.timeInMillis != null && pickedDateTime?.timeInMillis != currentDateTime.timeInMillis)
-                            startAlarm(requireContext(), pickedDateTime!!.timeInMillis, note)
+                        if (pickedDateTime.timeInMillis != currentDateTime.timeInMillis)
+                            startAlarm(requireContext(), pickedDateTime.timeInMillis, note)
 
                         audioRecorder.stopPlayingRecording()
                         navController.navigate(R.id.action_editNoteFragment_to_homeFragment)
@@ -314,8 +290,10 @@ class EditNoteFragment : Fragment(), View.OnClickListener, TimePickerDialog.OnTi
                         viewModel.insertNote(note)
                         context.getString(R.string.note_saved)
                             .showToast(requireContext(), Toast.LENGTH_SHORT)
-                        if (pickedDateTime?.timeInMillis != null && pickedDateTime!!.timeInMillis <= currentDateTime.timeInMillis)
-                            startAlarm(context, pickedDateTime!!.timeInMillis, note)
+
+                        if (pickedDateTime.timeInMillis <= currentDateTime.timeInMillis)
+                            startAlarm(context, pickedDateTime.timeInMillis, note)
+
                         navController.navigate(R.id.action_editNoteFragment_to_homeFragment)
                     } else {
                         etNoteTitle.requestFocus()
@@ -324,21 +302,6 @@ class EditNoteFragment : Fragment(), View.OnClickListener, TimePickerDialog.OnTi
                 }
             }
         }
-    }
-
-    private fun pickDate() {
-        val startYear = currentDateTime.get(Calendar.YEAR)
-        val startMonth = currentDateTime.get(Calendar.MONTH)
-        val startDay = currentDateTime.get(Calendar.DAY_OF_MONTH)
-
-        //Get yesterday's date
-        val calendar = Calendar.getInstance()
-        calendar.add(Calendar.DATE, 0)
-
-        val datePickerDialog =
-            DatePickerDialog(requireContext(), this, startYear, startMonth, startDay)
-        datePickerDialog.datePicker.minDate = calendar.timeInMillis
-        datePickerDialog.show()
     }
 
     private fun openEditReminderDialog() {
@@ -355,7 +318,7 @@ class EditNoteFragment : Fragment(), View.OnClickListener, TimePickerDialog.OnTi
             }
             btnModifyReminder.setOnClickListener {
                 bottomSheetDialog.dismiss()
-                pickDate()
+                dateTimePicker.pickDate()
             }
         }
         bottomSheetDialog.dismissWithAnimation = true

@@ -5,13 +5,27 @@
 
     <data>
 
+        <import type="androidx.databinding.ObservableField" />
+
         <import type="com.twain.say.utils.Extensions" />
 
         <import type="com.twain.say.utils.AppUtilKt" />
 
+        <import type="com.twain.say.utils.ReminderAvailableState" />
+
+        <import type="com.twain.say.utils.ReminderCompletionState" />
+
         <variable
             name="note"
             type="com.twain.say.ui.home.model.Note" />
+
+        <variable
+            name="reminderAvailableState"
+            type="ObservableField&lt;ReminderAvailableState>" />
+
+        <variable
+            name="reminderCompletionState"
+            type="ObservableField&lt;ReminderCompletionState>" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
@@ -124,17 +138,17 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_8sdp"
                 android:layout_marginTop="@dimen/_4sdp"
-                android:layout_marginBottom="@dimen/_4sdp"
                 android:layout_marginEnd="@dimen/_8sdp"
+                android:layout_marginBottom="@dimen/_4sdp"
                 android:fontFamily="@font/open_sans_italic"
                 android:maxLines="1"
                 android:text="@{AppUtilKt.formatDate(note.lastModificationDate, context)}"
                 android:textAppearance="@style/TextAppearance.Material3.LabelSmall"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_10ssp"
+                app:layout_constraintBottom_toTopOf="@id/guideline1"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_note_description"
-                app:layout_constraintBottom_toTopOf="@id/guideline1"
                 tools:text="17/11/21" />
 
             <androidx.appcompat.widget.AppCompatImageView
@@ -168,10 +182,11 @@
                 app:layout_constraintEnd_toStartOf="@id/tv_note_menu"
                 app:layout_constraintStart_toEndOf="@+id/appCompatImageView2"
                 app:layout_constraintTop_toTopOf="@+id/appCompatImageView2"
-                app:strikeThrough="@{AppUtilKt.currentDate().timeInMillis > note.reminder}"
-                app:visible="@{note.reminder != null}" />
+                app:strikeThrough="@{reminderCompletionState == ReminderCompletionState.COMPLETED}"
+                app:visible="@{reminderAvailableState == ReminderAvailableState.HAS_REMINDER}" />
 
             <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tv_set_reminder"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_4sdp"
@@ -187,7 +202,7 @@
                 app:layout_constraintEnd_toStartOf="@id/tv_note_menu"
                 app:layout_constraintStart_toEndOf="@+id/appCompatImageView2"
                 app:layout_constraintTop_toTopOf="@+id/appCompatImageView2"
-                app:visible="@{note.reminder == null}" />
+                app:visible="@{reminderAvailableState == ReminderAvailableState.NO_REMINDER}" />
 
             <androidx.appcompat.widget.AppCompatImageButton
                 android:id="@+id/tv_note_menu"
